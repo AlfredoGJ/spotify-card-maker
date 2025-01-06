@@ -1,0 +1,30 @@
+.back-container {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 6/9;
+}
+
+.back-image-container {
+  width: 100%;
+  height: 83%;
+}
+
+.back-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.back-code-container {
+  width: 100%;
+  height: 17%;
+}
+
+.back-code {
+  width: 100%;
+  height: 100%;
+}
+
+.cover {
+  width: 100%;
+}
