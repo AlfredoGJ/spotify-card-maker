@@ -11,9 +11,12 @@ type SimplifiedArtist = {
 };
 
 type Color = {
-  r: number;
-  g: number;
-  b: number;
+  name: string;
+  values: {
+    r: number;
+    g: number;
+    b: number;
+  };
 };
 type ElementSize = {
   width: number;

@@ -8,6 +8,7 @@ interface IAlbumCoverProps {
 export const AlbumCover = ({ src, onCoverLoad }: IAlbumCoverProps) => {
   return (
     <img
+      style={{width:'100%'}}
       crossOrigin="anonymous"
       onLoad={onCoverLoad}
       alt="cover"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FrontCover } from "../organisms/FrontCover/FrontCover";
 import { BackCover } from "../organisms/BackCover/BackCover";
 import { useParams } from "react-router";
@@ -6,12 +6,19 @@ import { Color, Track } from "../../types/types";
 // @ts-ignore
 import ColorThief from "colorthief";
 import createPalette from "../../utils/createPalette";
-import { ColorPick } from "../atoms/ColorPick";
-import { ElementSizeContextProvider } from "../../utils/hooks/useResize";
+import generateDefaultPalette from "../../utils/generateDefaultPalette";
+import { ColorSelector } from "../molecules/ColorSelector";
+import { SelectItem } from "../../utils/hooks/useSelect";
 
 export const SongPage = () => {
   const [track, setTrack] = useState<Track>();
   const [palette, setPalette] = useState<Array<Color>>([]);
+  const [backgroundColors, setBackgroundColors] = useState<Color[]>([]);
+  const [textColor, setTextColor] = useState<Color>({
+    name: "white",
+    values: { r: 255, g: 255, b: 255 },
+  });
+  const [colorsLoading, setColorsLoading] = useState(true);
   const { trackId } = useParams();
 
   useEffect(() => {
@@ -21,27 +28,70 @@ export const SongPage = () => {
   }, [trackId]);
 
   function handleCoverLoad(cover: HTMLImageElement) {
+    console.log("Cover loaded");
+    console.log("Palette is empty, creating a new one");
     let colorthief = new ColorThief();
     const palette = createPalette(colorthief.getPalette(cover, 8));
     console.log(palette);
-    setPalette(palette);
+    const defaultPalette = generateDefaultPalette();
+
+    setPalette([...palette, ...defaultPalette]);
+    setColorsLoading(false);
   }
+
+  const handleBackgoundColorsChange = useCallback(function (
+    selected: SelectItem[]
+  ) {
+    const colors: Color[] = selected.map((s) => ({
+      name: s.index.toString(),
+      values: s.value,
+    }));
+    console.log("New Colors:", colors);
+
+    setBackgroundColors(colors);
+  },
+  []);
+
+  function handleTextColorChange(selected: SelectItem[]) {
+    const color = selected.map((c) => ({
+      name: c.index.toString(),
+      values: c.value,
+    }));
+    setTextColor(color[0]);
+  }
+
+  console.log("SongPageRendered");
   return track ? (
     <div>
       <div className="flex gap-6 w-10/12 justify-center justify-self-center my-10 ">
         <FrontCover
           track={track!}
           onCoverLoad={handleCoverLoad}
-          firstBgColor={palette[0]}
-          secondBgColor={palette[1]}
+          firstBgColor={backgroundColors[0]}
+          secondBgColor={backgroundColors[1]}
+          textColor={textColor}
         />
-        <BackCover track={track!} />
+        <BackCover
+          imgUri={track.album.images[0].url}
+          scannableUri={track.scannables[0].uri}
+        />
       </div>
-      <div className="flex gap-4 w-4/4 justify-center">
-        {palette.map((color) => (
-          <ColorPick color={color} selected={false} />
-        ))}
-      </div>
+      {!colorsLoading && (
+        <>
+          <ColorSelector
+            text="Select background colors:"
+            colors={palette}
+            maxSelect={2}
+            onChange={handleBackgoundColorsChange}
+          />
+          <ColorSelector
+            text="Select text color:"
+            colors={palette}
+            maxSelect={1}
+            onChange={handleTextColorChange}
+          />
+        </>
+      )}
     </div>
   ) : (
     <div></div>

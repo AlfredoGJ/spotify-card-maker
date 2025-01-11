@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useContext,
 } from "react";
+// A simple object with the shape {width:number, height: number}
 import { ElementSize } from "../../types/types";
 
 interface ElementSizeContextProviderProps
@@ -24,7 +25,6 @@ function ElementSizeContextProvider({
   function handleElementResize(entries: Array<ResizeObserverEntry>) {
     const height = entries[0].borderBoxSize[0].blockSize;
     const width = entries[0].borderBoxSize[0].inlineSize;
-    console.log(`Element resized -> width: ${width}, height: ${height}  `);
     setElementSize({ width, height });
   }
 
@@ -32,7 +32,6 @@ function ElementSizeContextProvider({
 
   useEffect(() => {
     if (elementRef.current) {
-      console.log(elementRef);
       const observer = new ResizeObserver(handleElementResize);
       observer.observe(elementRef.current!);
 
@@ -53,10 +52,13 @@ function ElementSizeContextProvider({
   );
 }
 
-const useResize = () => {
+const useElementSize = () => {
   const size = useContext(ElementSizeContext);
-
+  if (size === null || size === undefined)
+    throw new Error(
+      "'useElementSize' hook must be used in components wrapped inside 'ElementSizeContextProvider' component "
+    );
   return size;
 };
 
-export { ElementSizeContextProvider, useResize };
+export { ElementSizeContextProvider, useElementSize as useResize };

@@ -11,7 +11,7 @@ export const TitleAndArtist = ({ title, artist }: ITitleAndArtistProps) => {
   const { width, height } = useResize();
   console.log("This is the Width:", width);
   return (
-    <div className="flex flex-col" style={{ marginTop: `${height * 0.012}px` }}>
+    <div className="flex flex-col" style={{ marginTop: `${height * 0.011}px` }}>
       <div>
         <div style={{ fontSize: `${width * title.size}px` }}>
           <b>{title.text}</b>
@@ -25,7 +25,7 @@ export const TitleAndArtist = ({ title, artist }: ITitleAndArtistProps) => {
         style={{ paddingBottom: `${height * 0.01}px` }}
       >
         <HearthIcon
-          fill="white"
+          fill="currentColor"
           width={height * 0.045}
           height={height * 0.045}
         />

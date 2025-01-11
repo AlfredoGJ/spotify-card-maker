@@ -1,12 +1,12 @@
 import React from "react";
-import { Track } from "../../../types/types";
 import "./back-cover.css";
 
 interface BackCoverProps {
-  track: Track;
+  imgUri:string
+  scannableUri:string
 }
 
-export const BackCover = ({ track }: BackCoverProps) => {
+export const BackCover = ({ imgUri, scannableUri }: BackCoverProps) => {
   return (
     <div className="back-container">
       {/* <div className="back-body"> */}
@@ -14,14 +14,14 @@ export const BackCover = ({ track }: BackCoverProps) => {
         <img
           className="back-image"
           alt="back-image"
-          src={track?.album.images[0].url}
+          src={imgUri}
         />
       </div>
       <div className="back-code-container">
         <img
           className="back-code"
           alt="spotify-code"
-          src={track?.scannables[0].uri}
+          src={scannableUri}
         />
       </div>
       {/* </div> */}

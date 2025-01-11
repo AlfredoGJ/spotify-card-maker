@@ -7,24 +7,24 @@ export const PlayingControls = () => {
   const { width } = useResize();
   return (
     <div
-      className="flex justify-between items-center"
-      style={{ paddingInline: `${width * 0.25}px` }}
+      className="flex justify-between items-center w-3/4 justify-self-center"
+      style={{ paddingInline: `${width * 0.09}px` }}
     >
       <NextIcon
         transform="rotate(180)"
-        fill="white"
-        width={`${width * 0.09}px`}
-        height={`${width * 0.09}px`}
+        fill="currentColor"
+        width={`${width * 0.085}px`}
+        height={`${width * 0.085}px`}
       />
       <PauseIcon
-        fill="white"
-        width={`${width * 0.12}px`}
-        height={`${width * 0.12}px`}
+        fill="currentColor"
+        width={`${width * 0.13}px`}
+        height={`${width * 0.13}px`}
       />
       <NextIcon
-        fill="white"
-        width={`${width * 0.09}px`}
-        height={`${width * 0.12}px`}
+        fill="currentColor"
+        width={`${width * 0.085}px`}
+        height={`${width * 0.085}px`}
       />
     </div>
   );
