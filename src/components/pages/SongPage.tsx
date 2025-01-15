@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { toJpeg, toPng } from "html-to-image";
 import { FrontCover } from "../organisms/FrontCover/FrontCover";
 import { BackCover } from "../organisms/BackCover/BackCover";
 import { useParams } from "react-router";
@@ -9,6 +10,7 @@ import createPalette from "../../utils/createPalette";
 import generateDefaultPalette from "../../utils/generateDefaultPalette";
 import { ColorSelector } from "../molecules/ColorSelector";
 import { SelectItem } from "../../utils/hooks/useSelect";
+import { Button } from "@headlessui/react";
 
 export const SongPage = () => {
   const [track, setTrack] = useState<Track>();
@@ -20,12 +22,45 @@ export const SongPage = () => {
   });
   const [colorsLoading, setColorsLoading] = useState(true);
   const { trackId } = useParams();
+  const frontCoverRef = useRef(null);
+  const backCoverRef = useRef(null);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE}?trackId=${trackId}`).then(
       (result) => result.json().then((body) => setTrack(body.track))
     );
   }, [trackId]);
+
+  const handleFrontDownload = useCallback(() => {
+    console.log("Download Function", frontCoverRef);
+    if (frontCoverRef.current) {
+      toPng(frontCoverRef.current, {
+        canvasHeight: 900,
+        canvasWidth: 600,
+        quality: 1,
+      }).then((dataUrl) => {
+        var link = document.createElement("a");
+        link.download = `${track?.name}-front.jpeg`;
+        link.href = dataUrl;
+        link.click();
+      });
+    }
+  }, [track]);
+
+  const handleBackDownload = useCallback(() => {
+    if (backCoverRef.current) {
+      toPng(backCoverRef.current, {
+        canvasHeight: 900,
+        canvasWidth: 600,
+        quality: 1,
+      }).then((dataUrl) => {
+        var link = document.createElement("a");
+        link.download = `${track?.name}-back.jpeg`;
+        link.href = dataUrl;
+        link.click();
+      });
+    }
+  }, [track]);
 
   function handleCoverLoad(cover: HTMLImageElement) {
     console.log("Cover loaded");
@@ -52,29 +87,45 @@ export const SongPage = () => {
   },
   []);
 
-  function handleTextColorChange(selected: SelectItem[]) {
+  const handleTextColorChange = useCallback(function (selected: SelectItem[]) {
     const color = selected.map((c) => ({
       name: c.index.toString(),
       values: c.value,
     }));
     setTextColor(color[0]);
-  }
+  }, []);
 
   console.log("SongPageRendered");
   return track ? (
     <div>
-      <div className="flex gap-6 w-10/12 justify-center justify-self-center my-10 ">
+      <div className="flex gap-6 w-10/12 justify-center justify-self-center mt-6 ">
         <FrontCover
           track={track!}
           onCoverLoad={handleCoverLoad}
           firstBgColor={backgroundColors[0]}
           secondBgColor={backgroundColors[1]}
           textColor={textColor}
+          ref={frontCoverRef}
         />
         <BackCover
           imgUri={track.album.images[0].url}
           scannableUri={track.scannables[0].uri}
+          ref={backCoverRef}
         />
+      </div>
+      <div className="flex w-10/12 justify-around justify-self-center py-2 ">
+        <Button
+          className="w-1/4  bg-green-400 rounded-md p-1 text-white hover:bg-green-500 focus:ring focus:ring-green-300 "
+          onClick={handleFrontDownload}
+        >
+          Download Front
+        </Button>
+        <Button
+          className="w-1/4 bg-green-400 rounded-md p-1 text-white hover:bg-green-500 focus:ring focus:ring-green-300 "
+          onClick={handleBackDownload}
+        >
+          Download Back
+        </Button>
       </div>
       {!colorsLoading && (
         <>

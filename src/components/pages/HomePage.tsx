@@ -5,7 +5,7 @@ export const HomePage = () => {
   const [uri, setUri] = useState<string>("");
 
   const navigate = useNavigate();
-  const tester = /^https:\/\/open.spotify.com\/(\w+)\/([a-zA-Z\d]+)/;
+  const tester = /^https:\/\/open.spotify.com.*\/(\w+)\/([a-zA-Z\d]+)/;
 
   function handleUriChange(e: ChangeEvent<HTMLInputElement>) {
     setUri(e.target.value);
