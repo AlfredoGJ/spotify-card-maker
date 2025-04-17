@@ -1,0 +1,141 @@
+{
+    "tracks": {
+        "OnlyInMyDreams": {
+            "track": {
+                "duration_ms": 170893,
+                "id": "190IqlryWu91WBKeDgZqZz",
+                "name": "Only in My Dreams",
+                "artists": [
+                    {
+                        "id": "2sSGPbdZJkaSE2AbcGOACx",
+                        "name": "The Marías",
+                        "type": "artist"
+                    }
+                ],
+                "album": {
+                    "id": "5XX1xVOP61GDQCGaZMLjhO",
+                    "name": "Superclean, Vol. I",
+                    "release_date": "2017-11-03",
+                    "total_tracks": 6,
+                    "images": [
+                        {
+                            "url": "https://i.scdn.co/image/ab67616d0000b2730924b9c6232d2348d4efa0dc",
+                            "width": 640,
+                            "height": 640
+                        },
+                        {
+                            "url": "https://i.scdn.co/image/ab67616d00001e020924b9c6232d2348d4efa0dc",
+                            "width": 300,
+                            "height": 300
+                        },
+                        {
+                            "url": "https://i.scdn.co/image/ab67616d000048510924b9c6232d2348d4efa0dc",
+                            "width": 64,
+                            "height": 64
+                        }
+                    ]
+                },
+                "scannables": [
+                    {
+                        "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/640/spotify:track:190IqlryWu91WBKeDgZqZz",
+                        "size": 640
+                    },
+                    {
+                        "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/300/spotify:track:190IqlryWu91WBKeDgZqZz",
+                        "size": 300
+                    }
+                ]
+            },
+            "coverPallete": [
+                {
+                    "name": "0",
+                    "values": {
+                        "rgb": {
+                            "r": 180,
+                            "g": 72,
+                            "b": 63
+                        },
+                        "hex": "#b4483f"
+                    }
+                },
+                {
+                    "name": "1",
+                    "values": {
+                        "rgb": {
+                            "r": 16,
+                            "g": 15,
+                            "b": 6
+                        },
+                        "hex": "#100f06"
+                    }
+                },
+                {
+                    "name": "2",
+                    "values": {
+                        "rgb": {
+                            "r": 236,
+                            "g": 225,
+                            "b": 208
+                        },
+                        "hex": "#ece1d0"
+                    }
+                },
+                {
+                    "name": "3",
+                    "values": {
+                        "rgb": {
+                            "r": 109,
+                            "g": 46,
+                            "b": 35
+                        },
+                        "hex": "#6d2e23"
+                    }
+                },
+                {
+                    "name": "4",
+                    "values": {
+                        "rgb": {
+                            "r": 135,
+                            "g": 141,
+                            "b": 131
+                        },
+                        "hex": "#878d83"
+                    }
+                },
+                {
+                    "name": "5",
+                    "values": {
+                        "rgb": {
+                            "r": 72,
+                            "g": 80,
+                            "b": 70
+                        },
+                        "hex": "#485046"
+                    }
+                },
+                {
+                    "name": "6",
+                    "values": {
+                        "rgb": {
+                            "r": 131,
+                            "g": 130,
+                            "b": 132
+                        },
+                        "hex": "#838284"
+                    }
+                },
+                {
+                    "name": "7",
+                    "values": {
+                        "rgb": {
+                            "r": 192,
+                            "g": 164,
+                            "b": 165
+                        },
+                        "hex": "#c0a4a5"
+                    }
+                }
+            ]
+        }
+    }
+}

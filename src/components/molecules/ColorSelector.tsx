@@ -1,13 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Color } from "../../types/types";
 import useSelect, { SelectItem } from "../../utils/hooks/useSelect";
-import { ColorName } from "../atoms/ColorValue";
+import { ColorValue } from "../atoms/ColorValue/ColorValue";
 
 interface IColorSelectorProps {
   text: string;
   colors: Array<Color>;
   maxSelect: number;
-  onChange: (selected: SelectItem[]) => void;
+  defaultSelectedNames: string[];
+  onChange: (selected: Color[]) => void;
 }
 
 export const ColorSelector = ({
@@ -15,50 +22,76 @@ export const ColorSelector = ({
   colors,
   maxSelect,
   onChange,
+  defaultSelectedNames,
 }: IColorSelectorProps) => {
   const selectItems = useMemo(() => {
-    return colors.map((c, idx) => ({
-      value: c.values,
-      index: c.name,
-      selected: idx < maxSelect ? true : false,
-    }));
-  }, [colors, maxSelect]);
+    console.log("Recalculating Items because 'colors' changed")
+    return colors.map((c) => ({ value: c.values, id: c.name }));
+  }, [colors]);
 
-  const [items, select, toggle] = useSelect(selectItems);
-  const [currentSelection, setCurrentSelection] = useState(0);
+  const _defaultSelectedNames = useMemo(() => {
+    return defaultSelectedNames && defaultSelectedNames.map((i) => i);
+  }, [colors]);
 
-  console.log("Rendered component");
+  const [items, select, toggle] = useSelect(
+    selectItems,
+    maxSelect,
+    _defaultSelectedNames
+  );
+
+  const hasMounted = useRef(false);
+  console.log("Rendered component, mounted", hasMounted.current);
 
   useEffect(() => {
-    onChange && onChange(items.filter((i) => i.selected));
-  }, [items, onChange]);
+    if (hasMounted.current) {
+      onChange &&
+        onChange(
+          items
+            .filter((i) => i.selected)
+            .map((c) => ({ name: c.id, values: c.value }))
+        );
+    }
+
+    hasMounted.current = true;
+  }, [items]);
+
+  function getPaletteItems(paletteItems: SelectItem[]) {
+    return paletteItems.map((item, i) => (
+      <ColorValue
+        width={38}
+        shape={
+          i === 0
+            ? "roundedLeft"
+            : i === paletteItems.length - 1
+            ? "roundedRight"
+            : "square"
+        }
+        onClick={() => handleColorSelect(item)}
+        color={{ name: item.id.toString(), values: item.value }}
+        isSelectable
+        selected={item.selected!}
+      />
+    ));
+  }
+
+  const otherColorItems = getPaletteItems(
+    items.filter((c) => c.id.toString().length > 1)
+  );
+  const paletteColorItems = getPaletteItems(
+    items.filter((c) => c.id.toString().length === 1)
+  );
 
   function handleColorSelect(color: SelectItem) {
-    console.log("Selected", color);
-
-    if (!color.selected) {
-      const currentSelected = items.filter((i) => i.selected);
-
-      toggle(currentSelected[currentSelection]);
-      select(color);
-      if (currentSelection < maxSelect - 1)
-        setCurrentSelection(currentSelection + 1);
-      else setCurrentSelection(0);
-    }
+    toggle(color);
   }
 
   return (
-    <div className="flex flex-col gap-2 bg-green-100 p-3">
-      <p className="text-sm">{text}</p>
-      <div className="grid grid-cols-8 gap-1">
-        {items.map((item) => (
-          <ColorName
-            onClick={() => handleColorSelect(item)}
-            color={{ name: item.index.toString(), values: item.value }}
-            isSelectable
-            selected={item.selected!}
-          />
-        ))}
+    <div className="flex flex-col gap-2   rounded-lg mb-2 ">
+      <div>
+        <div>
+          <p className="font-medium mb-2">{text}</p>
+          <div className="flex ">{getPaletteItems(items)}</div>
+        </div>
       </div>
     </div>
   );

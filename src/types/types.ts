@@ -13,9 +13,12 @@ type SimplifiedArtist = {
 type Color = {
   name: string;
   values: {
-    r: number;
-    g: number;
-    b: number;
+    rgb: {
+      r: number;
+      g: number;
+      b: number;
+    };
+    hex:string
   };
 };
 type ElementSize = {
@@ -49,6 +52,7 @@ enum ContentType {
 // type AlbumDto = Pick<Album, 'name' | 'id' | 'genres' | 'release_date' | 'total_tracks' | 'images'> & {
 //     artists: Array<ArtistDto>;
 // };
+
 type SimplifiedAlbum = {
   name: string;
   id: string;
@@ -56,6 +60,20 @@ type SimplifiedAlbum = {
   total_tracks: number;
   images: Image[];
 };
+
+type Album = {
+  name: string;
+  id: string;
+  genres: Array<string>;
+  release_date: string;
+  total_tracks: number;
+  images: Array<Image>;
+  label: string;
+  artists: Array<SimplifiedArtist>;
+  tracks: Array<SimplifiedTrack>;
+  scannables: Array<Scannable>;
+};
+
 type Track = {
   name: string;
   id: string;
@@ -65,11 +83,19 @@ type Track = {
   scannables: Scannable[];
 };
 
+type SimplifiedTrack = {
+  name: string;
+  duration_ms: number;
+  track_number: number;
+};
+
 export type {
   AccessToken,
   Track,
   SimplifiedAlbum,
   SimplifiedArtist,
+  SimplifiedTrack,
+  Album,
   Scannable,
   Color,
   ElementSize,

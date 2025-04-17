@@ -7,48 +7,44 @@ import { TitleAndArtist } from "../../molecules/TitleAndArtist";
 import { SongPlayback } from "../../molecules/SongPlayback";
 import { PlayingControls } from "../../molecules/PlayingControls";
 
-interface FrontCoverProps {
+interface IFrontCoverProps {
   textColor: Color;
   firstBgColor: Color;
   secondBgColor: Color;
   track: Track;
-  onCoverLoad: (img: HTMLImageElement) => void;
+  coverData: string;
+  gradientAngle:number
 }
 
-export const FrontCover = forwardRef<HTMLDivElement, FrontCoverProps>(
+export const FrontCover = forwardRef<HTMLDivElement, IFrontCoverProps>(
   (
     {
       track,
       firstBgColor,
       secondBgColor,
-      onCoverLoad,
-      textColor = { name: "white", values: { r: 255, g: 255, b: 255 } },
-    }: FrontCoverProps,
+      textColor = {
+        name: "white",
+        values: { rgb: { r: 255, g: 255, b: 255 }, hex: "#ffffff" },
+      },
+      coverData,
+      gradientAngle
+    }: IFrontCoverProps,
     ref
   ) => {
-    function handleCoverLoad(event: React.SyntheticEvent<HTMLImageElement>) {
-      onCoverLoad && onCoverLoad(event.target as HTMLImageElement);
-    }
-
     return (
       <ElementSizeContextProvider>
         <div className="front-container">
           <div
             ref={ref}
             style={{
-              color: textColor
-                ? `rgb(${textColor.values.r}, ${textColor.values.g}, ${textColor.values.b})`
-                : "white",
+              color: textColor ? `${textColor.values.hex}` : "white",
               background: firstBgColor
-                ? `linear-gradient(150deg, rgb(${firstBgColor.values.r}, ${firstBgColor.values.g},${firstBgColor.values.b}) 0%, rgb(${secondBgColor.values.r},${secondBgColor.values.g},${secondBgColor.values.b}) 100%)`
+                ? `linear-gradient(${gradientAngle}deg, ${firstBgColor.values.hex} 0%, ${secondBgColor.values.hex} 100%)`
                 : "white",
             }}
           >
             <div className="front-body">
-              <AlbumCover
-                src={track?.album.images[0].url}
-                onCoverLoad={handleCoverLoad}
-              ></AlbumCover>
+              <AlbumCover src={coverData}></AlbumCover>
               <TitleAndArtist
                 title={{ text: track.name, size: 0.075 }}
                 artist={{ text: track.artists[0].name, size: 0.05 }}

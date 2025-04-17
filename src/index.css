@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+document {
+  font-family: "Poppins", serif !important;
+}
 
+.editor-area-main{
+  grid-area: main;
+}
 
+.editor-area-right{
+  grid-area: rightBar;
+}
 
+.editor-area-top {
+  grid-area: topBar;
+}

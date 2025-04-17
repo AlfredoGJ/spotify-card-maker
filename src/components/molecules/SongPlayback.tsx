@@ -1,5 +1,6 @@
 import React from "react";
 import { useResize } from "../../utils/hooks/useResize";
+import millisecondsToHMS from "../../utils/millisecondToHMS";
 
 interface ISongPlaybackProps {
   duration_ms: number;
@@ -7,7 +8,8 @@ interface ISongPlaybackProps {
 
 export const SongPlayback = ({ duration_ms }: ISongPlaybackProps) => {
   const { height, width } = useResize();
-
+  const duration = millisecondsToHMS(duration_ms);
+  console.log("Duration:", duration);
   return (
     <div className="flex flex-col">
       <div
@@ -30,9 +32,7 @@ export const SongPlayback = ({ duration_ms }: ISongPlaybackProps) => {
         style={{ fontSize: `${width * 0.04}px` }}
       >
         <div className="">1:02</div>
-        <div className="">{`${Math.floor(
-          (duration_ms! / 60) * 0.001
-        )}:${Math.ceil((duration_ms! / 1000) % 60)} `}</div>
+        <div className="">{`${duration.minutes}:${duration.seconds}`}</div>
       </div>
     </div>
   );

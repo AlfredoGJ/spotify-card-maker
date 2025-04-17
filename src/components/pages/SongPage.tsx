@@ -1,35 +1,79 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { toJpeg, toPng } from "html-to-image";
+import { toPng } from "html-to-image";
 import { FrontCover } from "../organisms/FrontCover/FrontCover";
 import { BackCover } from "../organisms/BackCover/BackCover";
 import { useParams } from "react-router";
 import { Color, Track } from "../../types/types";
-// @ts-ignore
-import ColorThief from "colorthief";
-import createPalette from "../../utils/createPalette";
-import generateDefaultPalette from "../../utils/generateDefaultPalette";
 import { ColorSelector } from "../molecules/ColorSelector";
 import { SelectItem } from "../../utils/hooks/useSelect";
-import { Button } from "@headlessui/react";
+import { Button } from "../atoms/Button/Button";
+import colorScannable from "../../utils/colorateScannable/colorScannable";
+import { getImage, getScannable, getTrack } from "../../utils/api/getResource";
+import generatePaletteFromImage from "../../utils/generatePaletteFromImage";
+import { LoadingSkeleton } from "../molecules/LoadingSkeleton/LoadingSkeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import {
+  changeBackground,
+  changeTextColor,
+} from "../../state/editor/trackEditorSlice";
+import {
+  setCoverData,
+  setCoverPallete,
+  setScannableData,
+  setTrack,
+} from "../../state/track/trackSlice";
+import useTrackData from "../../utils/hooks/useTrackData";
 
 export const SongPage = () => {
-  const [track, setTrack] = useState<Track>();
-  const [palette, setPalette] = useState<Array<Color>>([]);
-  const [backgroundColors, setBackgroundColors] = useState<Color[]>([]);
-  const [textColor, setTextColor] = useState<Color>({
-    name: "white",
-    values: { r: 255, g: 255, b: 255 },
-  });
-  const [colorsLoading, setColorsLoading] = useState(true);
+  const { background, text, scannableBackground, scannableText } = useSelector(
+    (state: RootState) => state.editor
+  );
+  const { track, coverPallete, coverData, scannableData } = useSelector(
+    (state: RootState) => state.track
+  );
+  const dispatch = useDispatch();
   const { trackId } = useParams();
+  
+  const isLoading = !Boolean(coverData);
   const frontCoverRef = useRef(null);
   const backCoverRef = useRef(null);
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE}?trackId=${trackId}`).then(
-      (result) => result.json().then((body) => setTrack(body.track))
-    );
-  }, [trackId]);
+/*   useEffect(() => {
+    let imgPalette: Array<Color> = [];
+    let svg = "";
+    let imageUrl = "";
+    let trackData: Track | null = null;
+
+    getTrack(trackId!)
+      .then((track) => {
+        trackData = track;
+        return getImage(track.album.images[0].url);
+      })
+      .then((image) => {
+        imageUrl = image;
+        return generatePaletteFromImage(image, 8);
+      })
+      .then((palette) => {
+        imgPalette = palette;
+        return trackData;
+      })
+      .then((track) => getScannable(track!.scannables[0].uri))
+      .then(
+        (scannableText: string) =>
+          (svg = colorScannable(
+            scannableText,
+            imgPalette[0].values.hex,
+            imgPalette[1].values.hex
+          ))
+      )
+      .finally(() => {
+        dispatch(setCoverPallete(imgPalette));
+        dispatch(setScannableData(svg));
+        dispatch(setTrack(trackData));
+        dispatch(setCoverData(imageUrl));
+      });
+  }, [trackId, dispatch]); */
 
   const handleFrontDownload = useCallback(() => {
     console.log("Download Function", frontCoverRef);
@@ -45,7 +89,7 @@ export const SongPage = () => {
         link.click();
       });
     }
-  }, [track]);
+  }, [track?.name]);
 
   const handleBackDownload = useCallback(() => {
     if (backCoverRef.current) {
@@ -60,91 +104,129 @@ export const SongPage = () => {
         link.click();
       });
     }
-  }, [track]);
+  }, [track?.name]);
 
-  function handleCoverLoad(cover: HTMLImageElement) {
-    console.log("Cover loaded");
-    console.log("Palette is empty, creating a new one");
-    let colorthief = new ColorThief();
-    const palette = createPalette(colorthief.getPalette(cover, 8));
-    console.log(palette);
-    const defaultPalette = generateDefaultPalette();
-
-    setPalette([...palette, ...defaultPalette]);
-    setColorsLoading(false);
-  }
-
-  const handleBackgoundColorsChange = useCallback(function (
-    selected: SelectItem[]
-  ) {
+  function handleBackgoundColorsChange(selected: SelectItem[]) {
+    console.log("Background Colors Changed");
     const colors: Color[] = selected.map((s) => ({
-      name: s.index.toString(),
+      name: s.id.toString(),
       values: s.value,
     }));
-    console.log("New Colors:", colors);
 
-    setBackgroundColors(colors);
-  },
-  []);
+    if (colors.length > 0) {
+      dispatch(changeBackground(colors));
+    }
+  }
 
-  const handleTextColorChange = useCallback(function (selected: SelectItem[]) {
+  function handleTextColorChange(selected: SelectItem[]) {
+    console.log("Text Color Changed");
     const color = selected.map((c) => ({
-      name: c.index.toString(),
+      name: c.id.toString(),
       values: c.value,
     }));
-    setTextColor(color[0]);
-  }, []);
+    if (color.length > 0) {
+      dispatch(changeTextColor(color[0]));
+    }
+  }
+
+  const handleScannableColorChange = useCallback(
+    function (selected: SelectItem[]) {
+      const color = selected.map((c) => ({
+        name: c.id.toString(),
+        values: c.value,
+      }));
+      if (color.length > 0) {
+        let svg = colorScannable(
+          scannableData!,
+          undefined,
+          color[0].values.hex
+        );
+        dispatch(setScannableData(svg));
+      }
+    },
+    [dispatch, scannableData]
+  );
+  const handleScannableBackgroundColorChange = useCallback(
+    function (selected: SelectItem[]) {
+      const color = selected.map((c) => ({
+        name: c.id.toString(),
+        values: c.value,
+      }));
+      if (color.length > 0) {
+        let svg = colorScannable(scannableData!, color[0].values.hex);
+        dispatch(setScannableData(svg));
+      }
+    },
+    [dispatch, scannableData]
+  );
 
   console.log("SongPageRendered");
-  return track ? (
+  return (
     <div>
-      <div className="flex gap-6 w-10/12 justify-center justify-self-center mt-6 ">
-        <FrontCover
-          track={track!}
-          onCoverLoad={handleCoverLoad}
-          firstBgColor={backgroundColors[0]}
-          secondBgColor={backgroundColors[1]}
-          textColor={textColor}
-          ref={frontCoverRef}
-        />
-        <BackCover
-          imgUri={track.album.images[0].url}
-          scannableUri={track.scannables[0].uri}
-          ref={backCoverRef}
-        />
+      {/* <div className="flex gap-6 w-10/12 h-[60vh] justify-center justify-self-center mt-6 ">
+        <LoadingSkeleton isLoading={isLoading}>
+          <FrontCover
+            coverData={coverData!}
+            track={track!}
+            firstBgColor={background[0]}
+            secondBgColor={background[1]}
+            textColor={text}
+            ref={frontCoverRef}
+          />
+        </LoadingSkeleton>
+        <LoadingSkeleton isLoading={isLoading}>
+          <BackCover
+            scannableBackground={scannableBackground}
+            scannableText={scannableText}
+            coverData={coverData!}
+            scannableData={scannableData!}
+            ref={backCoverRef}
+          />
+        </LoadingSkeleton>
       </div>
       <div className="flex w-10/12 justify-around justify-self-center py-2 ">
-        <Button
-          className="w-1/4  bg-green-400 rounded-md p-1 text-white hover:bg-green-500 focus:ring focus:ring-green-300 "
-          onClick={handleFrontDownload}
-        >
-          Download Front
-        </Button>
-        <Button
-          className="w-1/4 bg-green-400 rounded-md p-1 text-white hover:bg-green-500 focus:ring focus:ring-green-300 "
-          onClick={handleBackDownload}
-        >
-          Download Back
-        </Button>
+        <Button onClick={handleFrontDownload}>Download Front</Button>
+        <Button onClick={handleBackDownload}>Download Back</Button>
       </div>
-      {!colorsLoading && (
-        <>
+
+      <div className="flex flex-row justify-center gap-2 h-[20vh]">
+        <LoadingSkeleton isLoading={isLoading}>
           <ColorSelector
-            text="Select background colors:"
-            colors={palette}
+            defaultSelectedNames={["0", "1"]}
+            text="Background colors"
+            colors={coverPallete}
             maxSelect={2}
             onChange={handleBackgoundColorsChange}
           />
+        </LoadingSkeleton>
+        <LoadingSkeleton isLoading={isLoading}>
           <ColorSelector
-            text="Select text color:"
-            colors={palette}
+            defaultSelectedNames={["0"]}
+            text="Text color"
+            colors={coverPallete}
             maxSelect={1}
             onChange={handleTextColorChange}
           />
-        </>
-      )}
+        </LoadingSkeleton>
+        <LoadingSkeleton isLoading={isLoading}>
+          <ColorSelector
+            defaultSelectedNames={["1"]}
+            text="Code Background Color"
+            colors={coverPallete}
+            maxSelect={1}
+            onChange={handleScannableBackgroundColorChange}
+          />
+        </LoadingSkeleton>
+        <LoadingSkeleton isLoading={isLoading}>
+          <ColorSelector
+            defaultSelectedNames={["0"]}
+            text="Code Color"
+            colors={coverPallete}
+            maxSelect={1}
+            onChange={handleScannableColorChange}
+          />
+        </LoadingSkeleton>
+      </div> */}
     </div>
-  ) : (
-    <div></div>
   );
 };

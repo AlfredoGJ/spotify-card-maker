@@ -41,6 +41,10 @@ function ElementSizeContextProvider({
     }
   }, []);
 
+  Children.map(children, (child) =>{
+    console.log("THE CHILD",child)
+  })
+
   return (
     <ElementSizeContext.Provider value={elementSize}>
       {Children.map(children, (child) =>
