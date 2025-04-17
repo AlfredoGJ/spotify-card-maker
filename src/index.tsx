@@ -11,21 +11,16 @@ import { Provider } from "react-redux";
 import { store } from "./state/store";
 import AlbumGeneratorPage from "./components/pages/AlbumGeneratorPage";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
+
     element: <HomePage></HomePage>,
     children: [
       {
-        path: "track",
+        index: true,
+
         element: <AlbumGeneratorPage />,
-        children:[
-          {
-            path:"track/:trackId",
-            element:<div>Track !!!</div>
-          }
-        ]
       },
       {
         path: "album/:albumId",

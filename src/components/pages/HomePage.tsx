@@ -20,7 +20,7 @@ export const HomePage = () => {
       navigate(`/${type}/${id}`);
     }
   }
-
+ navigate('/track')
   return (
     <div className="bg-slate-100 min-h-screen font-sans text-slate-800">
       <Header></Header>
