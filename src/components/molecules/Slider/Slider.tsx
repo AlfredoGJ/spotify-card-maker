@@ -1,13 +1,13 @@
 import { ChangeEvent, HtmlHTMLAttributes, useState } from "react";
 
-interface ISliderProps extends HtmlHTMLAttributes<HTMLInputElement> {
+interface ISliderProps  {
   initialValue: number;
   name: string;
   min: number;
   max: number;
   unit: string;
-  onChange?: (event:  ChangeEvent<HTMLInputElement>) => void;
-}
+  onChange?: (value:number) => void;
+} 
 
 const Slider = ({
   initialValue,
@@ -22,7 +22,7 @@ const Slider = ({
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const value = parseInt(event.target.value);
     setValue(value);
-    onChange && onChange(event);
+    onChange && onChange(value);
   }
   return (
     <div className="mb-4">

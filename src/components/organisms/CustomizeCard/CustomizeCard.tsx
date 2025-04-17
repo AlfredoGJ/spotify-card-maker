@@ -39,7 +39,7 @@ const CustomizeCard = () => {
 
   const handleTextColorChange = useCallback(
     (selected: Color[]) => {
-      dispatch(changeTextColor(selected[0]));
+      dispatch(changeTextColor(selected));
     },
     [dispatch]
   );
@@ -75,8 +75,8 @@ const CustomizeCard = () => {
           name="Angle"
           unit="º"
           initialValue={gradientAngle}
-          onChange={(event) =>
-            dispatch(changeGradientAngle(event.target.value))
+          onChange={(value) =>
+            dispatch(changeGradientAngle(value))
           }
         />
       </div>

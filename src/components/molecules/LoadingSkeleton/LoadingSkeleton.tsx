@@ -10,9 +10,12 @@ export const LoadingSkeleton = ({
   isLoading,
   children,
 }: ILoadingSkeletonProps) => {
+
+  const className = isLoading? 'visible': 'hidden'
+
   return isLoading ? (
-    <div className="skeleton w-full h-full"></div>
+    <div className={`skeleton ${className} w-full h-full`}></div>
   ) : (
-    <div>{children}</div>
+    <div className="skeleton-content">{children}</div>
   );
 };

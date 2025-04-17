@@ -41,17 +41,27 @@ function ElementSizeContextProvider({
     }
   }, []);
 
-  Children.map(children, (child) =>{
-    console.log("THE CHILD",child)
-  })
+  function findChild(
+    root: React.ReactElement,
+    id: string,
+    ref: React.MutableRefObject<null>
+  ): React.ReactElement<any> {
+    if (root.props.id && root.props.id === id)
+      return React.cloneElement(root, {
+        ref,
+      });
+    else return findChild(root.props.children, id, ref);
+  }
 
   return (
     <ElementSizeContext.Provider value={elementSize}>
-      {Children.map(children, (child) =>
-        React.cloneElement(child as React.ReactElement, {
-          ref: elementRef,
-        })
-      )}
+      {Children.map(children, (child) => {
+        return findChild(
+          child as React.ReactElement,
+          "resizable-target",
+          elementRef
+        );
+      })}
     </ElementSizeContext.Provider>
   );
 }

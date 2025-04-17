@@ -125,7 +125,7 @@ export const SongPage = () => {
       values: c.value,
     }));
     if (color.length > 0) {
-      dispatch(changeTextColor(color[0]));
+      dispatch(changeTextColor(color));
     }
   }
 

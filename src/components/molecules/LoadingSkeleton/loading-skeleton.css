@@ -1,8 +1,30 @@
-
-
 .skeleton{
-    border-radius: 8px;
-    background: linear-gradient(90deg, #f2f2f2 0%, #ccc 40%,#ccc 60%, #f2f2f2 100%);
+  /* border-radius: 8px; */
+  background: linear-gradient(
+    90deg,
+    #f2f2f2 0%,
+    #ccc 40%,
+    #ccc 60%,
+    #f2f2f2 100%
+  );
+ opacity: 0;
+  transition: all;
+  transition-duration: 300ms;
+}
+
+@keyframes appear {
+  0%{
+    opacity: 0;
+    filter: blur(5px);
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+
+.skeleton-content{
+  animation: appear .8s ease
 }
 
 @keyframes shimmer {
@@ -14,7 +36,9 @@
   }
 }
 
-.skeleton {
+
+.skeleton.visible {
+  animation: shimmer 2s infinite normal;
   background-size: 200% 200%;
-  animation: shimmer 1.5s infinite normal;
+  opacity: 1;
 }

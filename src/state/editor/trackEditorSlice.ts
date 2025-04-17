@@ -36,14 +36,14 @@ const trackEditorSlice = createSlice({
     changeBackground: (state, action: PayloadAction<Color[]>) => {
       state.background = action.payload;
     },
-    changeTextColor: (state, action:PayloadAction<Color>) => {
-      state.text = action.payload;
+    changeTextColor: (state, action:PayloadAction<Color[]>) => {
+      state.text = action.payload[0];
     },
-    changeScannableBackground: (state, action) => {
-      state.scannableBackground = action.payload;
+    changeScannableBackground: (state, action:PayloadAction<Color[]>) => {
+      state.scannableBackground = action.payload[0];
     },
-    changeScannableText: (state, action) => {
-      state.scannableText = action.payload;
+    changeScannableText: (state, action:PayloadAction<Color[]>) => {
+      state.scannableText = action.payload[0];
     },
     changeGradientAngle:(state,action)=>{
       state.gradientAngle = action.payload

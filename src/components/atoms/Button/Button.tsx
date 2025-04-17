@@ -12,7 +12,9 @@ export interface IButtonProps
     Pick<AllHTMLAttributes<HTMLButtonElement>, "name"> {
   size?: "small" | "medium" | "large";
   variant?: "primary" | "text";
-  shape?: "default" | "rounded" |"roundedLeft" | "roundedRight"
+  shape?: "default" | "rounded" | "roundedLeft" | "roundedRight";
+  className?:string
+  disabled?:boolean
 }
 
 export const Button: FC<IButtonProps> = ({
@@ -20,7 +22,9 @@ export const Button: FC<IButtonProps> = ({
   onClick,
   size = "medium",
   variant = "primary",
-  shape = 'rounded',
+  shape = "rounded",
+  className,
+  disabled,
   ...rest
 }: IButtonProps) => {
   let sizeClasses = Classes.size[size];
@@ -30,10 +34,15 @@ export const Button: FC<IButtonProps> = ({
     <Btn as={Fragment}>
       {({ active, hover, focus }) => (
         <button
-          className={`${Classes["default"]} ${sizeClasses} ${variantClasses} ${shapeClasses} ${
+          disabled={disabled
+          }
+          className={`${
+            Classes["default"]
+          } ${sizeClasses} ${variantClasses} ${shapeClasses} ${
             hover && Classes["hover"]
           }
           ${focus && Classes["focus"]}
+          ${className}
            `}
           onClick={onClick}
           {...rest}

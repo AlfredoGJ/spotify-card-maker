@@ -10,6 +10,7 @@ const { id, name, duration_ms, artists, album, scannables,  } =
 const {coverPallete} = sampleData.tracks.OnlyInMyDreams
 
 interface TrackState {
+  isloading:boolean;
   track?: Track;
   coverData?: string;
   scannableData?: string;
@@ -17,6 +18,7 @@ interface TrackState {
 }
 
 const initialState: TrackState = {
+  isloading:false,
   track: {
     id,
     name: name,
@@ -90,7 +92,11 @@ const trackSlice = createSlice({
       })
       .addCase(setCoverPaletteAsync.fulfilled, (state, action) => {
         state.coverPallete = action.payload;
-      });
+        state.isloading= false
+      })
+      .addCase(setTrackAsync.pending, (state) =>{
+        state.isloading= true
+      })
   },
 });
 
