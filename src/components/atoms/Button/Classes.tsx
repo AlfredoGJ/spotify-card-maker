@@ -1,9 +1,9 @@
 const ButtonClasses = {
-  default: "transition-colors",
+  default: "transition-colors justify-center",
   disabled: 'pointer-events-none',
   size: {
     small: "p-0 text-xs",
-    medium: "px-4 text-md font-medium",
+    medium: "px-4 py-2 text-md font-medium",
     large: "p-3 text-md",
   },
   hover: "bg-emerald-600",

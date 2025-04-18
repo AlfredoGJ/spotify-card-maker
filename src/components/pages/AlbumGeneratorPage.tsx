@@ -64,14 +64,13 @@ const AlbumGeneratorPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-6">
-      {/* Input Section */}
       <div className="bg-white rounded-xl p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
           <Music size={24} />
           <h2 className="text-xl font-semibold">Create your music card</h2>
         </div>
 
-        <div className="flex gap-4 mb-4">
+        <div className="flex flex-col gap-4 mb-4">
           <Input
             leftIcon={<Link2 size={18} />}
             value={inputText}
@@ -84,7 +83,7 @@ const AlbumGeneratorPage = () => {
             className="flex gap-2 items-center "
             // className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            <span>{ isFetching? 'Generating': 'Generate'}</span>
+            <span>{isFetching ? "Generating" : "Generate"}</span>
             {isFetching && <Spinner />}
           </Button>
         </div>

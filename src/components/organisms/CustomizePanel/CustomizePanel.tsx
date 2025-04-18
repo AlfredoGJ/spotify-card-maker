@@ -17,7 +17,7 @@ export const CustomizePanel = ({
         <Settings size={24} />
         <h2 className="text-xl font-semibold">Customize</h2>
       </div>
-      <div className="grid sm:grid-cols-2 gap-4">{children}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">{children}</div>
     </div>
   );
 };

@@ -48,7 +48,7 @@ const Preview = ({ children, CustomizeComponent }: IPreviewProps) => {
       </div>
 
       {CustomizeComponent}
-      <div className="my-4">
+      <div className="mt-8">
         <OutputWidget onDownloadClick={handleDownloadClick}/>
       </div>
     </div>

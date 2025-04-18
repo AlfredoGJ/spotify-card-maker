@@ -9,15 +9,15 @@ interface IInfoProps {
 }
 
 const variantIcons: VariantProps = {
-  Info: <InfoIcon size={14} className="mr-1" />,
-  Danger: <InfoIcon size={14} className="mr-1" />,
+  Info: <InfoIcon  size={38} className="mr-1 " />,
+  Danger: <InfoIcon width={38} className="mr-1 " />,
 };
 
 const Info = ({ text, variant }: IInfoProps) => {
   return (
-    <div className="flex items-center text-sm text-slate-500 mb-4">
+    <div className="flex items-center text-xs  text-slate-500 mb-4">
       {variantIcons[variant]}
-      {text}
+      <div>{text}</div>
     </div>
   );
 };

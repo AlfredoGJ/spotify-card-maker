@@ -1,10 +1,10 @@
 const Header = () => {
   return (
     <header className="bg-emerald-500 text-white px-8 py-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold">Music Card Generator</h1>
-      <button className="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg font-medium transition-colors">
+      <h1 className="text-2xl font-medium">Music Card Generator</h1>
+      {/* <button className="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg font-medium transition-colors">
         My Gallery
-      </button>
+      </button> */}
     </header>
   );
 };
