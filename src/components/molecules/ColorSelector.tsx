@@ -82,7 +82,7 @@ export const ColorSelector = ({
   );
 
   function handleColorSelect(color: SelectItem) {
-    toggle(color);
+    select(color);
   }
 
   return (

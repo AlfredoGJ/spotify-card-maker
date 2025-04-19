@@ -20,7 +20,7 @@ function useSelect(
   >({});
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const _maxSelected = maxSelected || items.length;
-  
+
 
   const initHookRef = useRef(false);
   const initHook = () => {
@@ -47,7 +47,7 @@ function useSelect(
     setSelected(new Set(_selected.values()));
     console.log("items changed:", items);
     console.log("Selected:", _selected);
-    
+
     initHookRef.current = true;
   };
 
@@ -58,7 +58,7 @@ function useSelect(
       let arrayIndex = indexDictionary[item.id];
 
       if (arrayIndex === undefined) throw selectionError;
-
+      console.log("Selected Set:", selected)
       if (!selected.has(item.id)) {
         if (selected.size < _maxSelected) {
           itemsArray[arrayIndex].selected = true;
@@ -76,7 +76,7 @@ function useSelect(
         }
 
         setItemsArray([...itemsArray]);
-        setSelected({ ...selected });
+        setSelected(new Set(selected));
       }
     },
     [itemsArray, indexDictionary, _maxSelected, selected]
