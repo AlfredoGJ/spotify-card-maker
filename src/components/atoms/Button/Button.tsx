@@ -10,9 +10,9 @@ import Classes from "./Classes";
 export interface IButtonProps
   extends HtmlHTMLAttributes<HTMLButtonElement>,
     Pick<AllHTMLAttributes<HTMLButtonElement>, "name"> {
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | "xsmall";
   variant?: "primary" | "text";
-  shape?: "default" | "rounded" | "roundedLeft" | "roundedRight";
+  shape?: "default" | "rounded" | "roundedLeft" | "roundedRight" | "circle";
   className?:string
   disabled?:boolean
 }

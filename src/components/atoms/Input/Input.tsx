@@ -1,35 +1,44 @@
-import { Search } from "lucide-react";
-
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 interface InputProps {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
   className?: string;
-  leftIcon?: React.ReactNode;
+  leftSlot?: React.ReactNode;
+  rightSlot?: React.ReactNode;
 }
 
-const Input = ({ value, onChange, placeholder, leftIcon }: InputProps) => {
+const Input = ({
+  value,
+  onChange,
+  placeholder,
+  leftSlot,
+  rightSlot,
+}: InputProps) => {
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     onChange && onChange(e.target.value);
   }
-  const inputClasses = leftIcon? 'pl-10' :'pl-4'
+
+  const [focus, setFocus] = useState(false);
+
+  const focusClasses = focus ? "ring ring-slate-300 " : "";
+
   return (
-
-
-    <div className="relative flex-grow">
-      {leftIcon && (
-        <div className="absolute top-1/2 transform -translate-y-1/2 translate-x-2/3 text-slate-400">
-          {leftIcon}
-        </div>
-      )}
+    <div
+      className={`flex w-full h-11 border border-slate-200 rounded-lg ${focusClasses}`}
+    >
+      {leftSlot && <div className="flex self-center">{leftSlot}</div>}
       <input
+        value={value}
+        onFocus={(e) => setFocus(true)}
+        onBlur={(e) => setFocus(false)}
         onChange={handleChange}
         type="text"
         placeholder={placeholder}
-        className={`w-full py-3  pr-4 border border-slate-200 rounded-lg ${inputClasses}`}
+        className={`my-input-reset w-full px-2 border-none outline-none`}
       />
+      {rightSlot && <div className="flex self-center">{rightSlot}</div>}
     </div>
   );
 };

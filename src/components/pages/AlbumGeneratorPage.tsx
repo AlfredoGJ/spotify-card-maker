@@ -1,4 +1,4 @@
-import { Music, Search, Eye, Settings, Link2 } from "lucide-react";
+import { Music, Search, Eye, Settings, Link2, X } from "lucide-react";
 import { Input, Button, Info } from "../atoms";
 import { FileInput, Slider } from "../molecules";
 import { Preview } from "../organisms";
@@ -62,6 +62,11 @@ const AlbumGeneratorPage = () => {
     setInputText(value);
   }
 
+  function handleInputClear() {
+    console.log("INPUT CLEAR!!!");
+    setInputText("");
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-6">
       <div className="bg-white rounded-xl p-6 shadow-sm">
@@ -72,7 +77,20 @@ const AlbumGeneratorPage = () => {
 
         <div className="flex flex-col gap-4 mb-4">
           <Input
-            leftIcon={<Link2 size={18} />}
+            leftSlot={<Link2 size={18} className="text-slate-400 ml-2 mr-1" />}
+            rightSlot={
+              inputText !== "" ? (
+                <Button
+                  onClick={() => handleInputClear()}
+                  className="ml-1 mr-2"
+                  variant="text"
+                  size="xsmall"
+                  shape="circle"
+                >
+                  <X width={22} height={22} />
+                </Button>
+              ) :  (<div className="p-2"></div>)
+            }
             value={inputText}
             onChange={handleInputChange}
             placeholder="Paste Spotify URI (e.g., https://open.spotify.com/track:4iV5W9uYEdYUVa79Axb7Rh) "
@@ -81,7 +99,6 @@ const AlbumGeneratorPage = () => {
             disabled={isFetching}
             onClick={handleGenerateClick}
             className="flex gap-2 items-center "
-            // className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
           >
             <span>{isFetching ? "Generating" : "Generate"}</span>
             {isFetching && <Spinner />}
