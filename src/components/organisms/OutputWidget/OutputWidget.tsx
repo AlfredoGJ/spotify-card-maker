@@ -7,7 +7,7 @@ interface IOutputWidgetProps {
 
 const OutputWidget = ({ onDownloadClick }: IOutputWidgetProps) => {
   return (
-    <div className="flex flex-col  gap-5 justify-between  md:bg-pink-600 sm:bg-red-600 ">
+    <div className="flex flex-col  gap-5 justify-between  lg:flex-row  ">
       <div className="flex items-center justify-center">
         <span className="text-md font-medium text-slate-500 mr-2">Share:</span>
         <div className="flex gap-4">

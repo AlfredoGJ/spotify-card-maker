@@ -1,57 +1,20 @@
-import {
-  Eye
-} from "lucide-react";
-import { Track } from "../../../types/types";
-import { HtmlHTMLAttributes, useRef } from "react";
-
-import OutputWidget from "../OutputWidget/OutputWidget";
-import downloadImage from "../../../utils/DownloadImage";
-import { useSelector } from "react-redux";
-import { SelectTrack } from "../../../state/track/selectors";
+import { Eye } from "lucide-react";
+import { HtmlHTMLAttributes } from "react";
+import { Surface } from "../../atoms/Surface/Surface";
 
 interface IPreviewProps extends HtmlHTMLAttributes<HTMLDivElement> {
-  CustomizeComponent: React.ReactNode;
+  title: string;
 }
 
-const Preview = ({ children, CustomizeComponent }: IPreviewProps) => {
-
-  const nodeRef = useRef(null)
-
-   const track =  useSelector(SelectTrack)
-  function handleDownloadClick (){
-    const parentNode = nodeRef.current! as HTMLDivElement
-    const nodeList = parentNode.getElementsByClassName('downloadable')
-    let actualElement = null
-    
-    // Convert HTMLCollection to Array to make it iterable
-    Array.from(nodeList).forEach(node => {
-      actualElement = node
-    })
-    
-    // Or simply get the first element if that's what we need
-    if (nodeList.length > 0) {
-      actualElement = nodeList[0]
-    }
-
-    downloadImage(actualElement as HTMLElement, `${track?.name}-${track?.artists[0].name}`)
-  }
-
+const Preview = ({ children, title }: IPreviewProps) => {
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm">
+    <Surface>
       <div className="flex items-center gap-2 mb-4">
         <Eye size={24} />
-        <h2 className="text-xl font-semibold">Preview</h2>
+        <h2 className="text-xl font-semibold">{title}</h2>
       </div>
-
-      <div ref={nodeRef} className="relative rounded-lg overflow-hidden mb-4">
-        {children}
-      </div>
-
-      {CustomizeComponent}
-      <div className="mt-8">
-        <OutputWidget onDownloadClick={handleDownloadClick}/>
-      </div>
-    </div>
+      {children}
+    </Surface>
   );
 };
 

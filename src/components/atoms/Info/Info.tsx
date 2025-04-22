@@ -9,8 +9,8 @@ interface IInfoProps {
 }
 
 const variantIcons: VariantProps = {
-  Info: <InfoIcon  size={38} className="mr-1 " />,
-  Danger: <InfoIcon width={38} className="mr-1 " />,
+  Info: <InfoIcon size={40}  className="mr-1 w-10 md:w-6" />,
+  Danger: <InfoIcon width={40} className="mr-1 w-10 md:w-6" />,
 };
 
 const Info = ({ text, variant }: IInfoProps) => {
