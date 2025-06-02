@@ -9,10 +9,20 @@ import { Info } from "../../atoms";
 import { setTrackAsync } from "../../../state/track/trackSlice";
 import { AppDispatch, RootState } from "../../../state/store";
 import { Surface } from "../../atoms/Surface/Surface";
+import createResourceUri from "../../../utils/createResourceUri";
+import { useNavigate } from "react-router";
 
-
-const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({ className }) => {
-  const [inputText, setInputText] = useState("");
+const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
+  className,
+  resourceType,
+  resourceId,
+}) => {
+  const [inputText, setInputText] = useState(
+    resourceId && resourceType
+      ? createResourceUri(resourceType, resourceId)
+      : ""
+  );
+  const navigate = useNavigate();
   const isFetching = useSelector(SelectIsLoading);
   const dispatch = useDispatch<AppDispatch>();
   function handleInputChange(value: string) {
@@ -29,11 +39,11 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({ className }) => {
     if (tester.test(inputText)) {
       let [, type, id] = tester.exec(inputText) as Array<string>;
 
-      dispatch(setTrackAsync(id));
+      navigate(`/${type}/${id}`);
     }
   }
   return (
-    <Surface className={className} >
+    <Surface className={className} shadow="md">
       <div className="flex items-center gap-2 mb-4">
         <Music size={24} />
         <h2 className="text-xl font-semibold">Create your music card</h2>
@@ -80,4 +90,3 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({ className }) => {
 };
 
 export default GenerateCardWidget;
-

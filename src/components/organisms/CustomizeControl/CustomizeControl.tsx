@@ -27,6 +27,7 @@ export const CustomizeControl = <T extends React.ComponentType<any>>({
   selector,
   action,
   controlProps,
+  className,
   ...restProps
 }: Final<T>) => {
   const selectedValue = useSelector(selector);
@@ -39,7 +40,7 @@ export const CustomizeControl = <T extends React.ComponentType<any>>({
   };
 
   return (
-    <div className="">
+    <div className={className}>
       <h3 className="font-medium mb-2">{label}</h3>
       <Component
         {...(dynamicProps as any)}

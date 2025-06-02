@@ -41,7 +41,7 @@ enum ImageSizes {
   Tiny = 64,
 }
 
-enum ContentType {
+enum ResourceType {
   Album = "album",
   Track = "track",
   Playlist = "playlist",
@@ -100,4 +100,4 @@ export type {
   Color,
   ElementSize,
 };
-export { ImageSizes, ContentType };
+export { ImageSizes, ResourceType };

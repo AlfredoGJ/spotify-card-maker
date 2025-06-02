@@ -26,29 +26,17 @@ const TrackCardsFrontPreviewTemplate = ({}: ITrackCardsPreview) => {
 
   function handleDownloadClick() {
     const parentNode = nodeRef.current! as HTMLDivElement;
-    const nodeList = parentNode.getElementsByClassName("downloadable");
-    let actualElement = null;
-
-    // Convert HTMLCollection to Array to make it iterable
-    Array.from(nodeList).forEach((node) => {
-      actualElement = node;
-    });
-
-    // Or simply get the first element if that's what we need
-    if (nodeList.length > 0) {
-      actualElement = nodeList[0];
-    }
-
+    
     downloadImage(
-      actualElement as HTMLElement,
+      parentNode as HTMLElement,
       `${track?.name}-${track?.artists[0].name}`
     );
   }
 
   return (
     <Preview title="Front Cover">
-      <div className="flex flex-col justify-around gap-5">
-        <div>
+      <div className="flex flex-col justify-between gap-7 h-full ">
+        <div className="flex flex-col gap-5">
           <div className="rounded-lg overflow-clip">
             <FrontCover
               ref={nodeRef}

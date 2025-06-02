@@ -33,6 +33,7 @@ export const FrontCoverCustomizePanel = () => {
         maxSelect={1}
       />
       <CustomizeControl
+        className="sm:col-span-2"
         label="Gradient Angle"
         Component={Slider}
         selector={SelectGradientAngle}

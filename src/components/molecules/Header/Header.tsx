@@ -1,15 +1,21 @@
 import logo from "../../../assets/img/logo-4.png";
-
+import logosvg from '../../../assets/logo.svg'
 const Header = () => {
   return (
-    <header className="bg-emerald-500 text-white px-8 py-4 flex justify-between items-center">
-      <h1 className="text-2xl font-medium">Music Card Generator</h1>
-      {/* <button className="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg font-medium transition-colors">
-        My Gallery
-      </button> */}
-      <img src={logo} className="w-10" ></img>
+    <header className="bg-emerald-500 text-white px-8 py-6 flex justify-between items-center">
+      <div className="flex gap-3 items-center">
+        <img src={logosvg} className="w-10" alt="logo"></img>
+        <h1 className="text-3xl font-medium">
+          {" "}
+          Spot<span className="text-3xl font-thin">Image</span>
+        </h1>
+      </div>
     </header>
   );
 };
 
 export default Header;
+
+// SpotImage
+// Spotixer
+// Musix

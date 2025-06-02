@@ -9,22 +9,22 @@ import { AlbumPage } from "./components/pages/AlbumPage";
 import { EditorLayout } from "./components/atoms/EditorLayout/EditorLayout";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
-import AlbumGeneratorPage from "./components/pages/AlbumGeneratorPage";
+import TrackGeneratorPage from "./components/pages/TrackGeneratorPage";
+import { Layout } from "./components/templates/Layout/Layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
 
-    element: <HomePage></HomePage>,
+    element: <Layout/>,
     children: [
       {
-        index: true,
-
-        element: <AlbumGeneratorPage />,
+        path:'/',
+        element: <HomePage />,
       },
       {
-        path: "album/:albumId",
-        element: <AlbumPage />,
+        path: "/track/:trackId",
+        element: <TrackGeneratorPage />,
       },
       {
         path: "editor/",

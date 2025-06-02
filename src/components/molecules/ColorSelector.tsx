@@ -58,6 +58,7 @@ export const ColorSelector = ({
   function getPaletteItems(paletteItems: SelectItem[]) {
     return paletteItems.map((item, i) => (
       <ColorValue
+      key={item.id}
         width={38}
         shape={
           i === 0

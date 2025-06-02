@@ -19,8 +19,8 @@ export const SongPlayback = ({ duration_ms }: ISongPlaybackProps) => {
         }}
       >
         <div
-          className="absolute w-full h-full rounded-md"
-          style={{ background: "rgba(180,180,180,0.7)" }}
+          className="absolute w-full h-full rounded-md "
+          style={{ background: "rgba(180,180,180,0.15)" }}
         ></div>
         <div
           className="absolute w-1/3 h-full rounded-md"

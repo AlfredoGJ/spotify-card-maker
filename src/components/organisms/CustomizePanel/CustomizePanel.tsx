@@ -12,7 +12,7 @@ export const CustomizePanel = ({
 
 
   return (
-    <div className="bg-slate-200 bg-opacity-70 backdrop-blur-md  rounded-xl mt-4 p-4">
+    <div className="bg-slate-200 bg-opacity-70 backdrop-blur-md  rounded-xl p-4">
       <div className="flex items-center gap-2 mb-4 z-20">
         <Settings size={24} />
         <h2 className="text-xl font-semibold">Customize</h2>

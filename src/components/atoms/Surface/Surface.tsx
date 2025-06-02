@@ -3,7 +3,7 @@ import { SurfaceProps } from "./types";
 import SurfaceClasses from "./classes";
 export const Surface: FC<SurfaceProps> = ({
   children,
-  className,
+  className = "",
   borderRadius = "lg",
   padding = "lg",
   shadow = "sm",
