@@ -13,7 +13,9 @@ export const HomePage = () => {
 
   const navigate = useNavigate();
   const tester = /^https:\/\/open.spotify.com.*\/(\w+)\/([a-zA-Z\d]+)/;
-
+  const initialIds = [
+    "4PAR0Zp6Mbu3p6NKYClgBr",
+  ];
   function handleUriChange(e: ChangeEvent<HTMLInputElement>) {
     setUri(e.target.value);
   }
@@ -22,7 +24,9 @@ export const HomePage = () => {
     if (tester.test(uri)) {
       let [, type, id] = tester.exec(uri) as Array<string>;
 
-      navigate(`/${type}/${id}`);
+      navigate(
+        `/${type}/${initialIds[Math.floor(Math.random() * initialIds.length)]}`
+      );
     }
   }
 
@@ -37,7 +41,12 @@ export const HomePage = () => {
           favorite songs, customize colors, design and share with friends in
           seconds.
         </p>
-        <Link to="/track/6Fba9RZtC6vTY814JToDtP" className="">
+        <Link
+          to={`/track/${
+            initialIds[Math.floor(Math.random() * initialIds.length)]
+          }`}
+          className=""
+        >
           <Button size="large">
             <p className="font-semibold">Begin To Create</p>
           </Button>

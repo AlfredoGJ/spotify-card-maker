@@ -17,8 +17,12 @@ interface TrackState {
   coverPallete: Array<Color>;
 }
 
+const emptyState: TrackState = {
+  isloading:true,
+  coverPallete:[]
+}
 const initialState: TrackState = {
-  isloading:false,
+  isloading:true,
   track: {
     id,
     name: name,
