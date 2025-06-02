@@ -26,7 +26,7 @@ const initialState: TrackEditor = {
   text: defaultColor,
   scannableBackground: defaultColor,
   scannableText: whiteColor,
-  gradientAngle:45
+  gradientAngle:130
 };
 
 const trackEditorSlice = createSlice({
