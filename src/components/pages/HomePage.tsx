@@ -1,33 +1,29 @@
-import React, { ChangeEvent, useState } from "react";
-import { Input } from "@headlessui/react";
-import { Outlet, useNavigate } from "react-router";
+import React from "react";
+import { useNavigate } from "react-router";
 import { Button } from "../atoms/Button/Button";
-import Header from "../molecules/Header/Header";
 import SampleImg from "../../assets/img/examples/sample1.png";
 import SampleImgBack from "../../assets/img/examples/sample1-back.png";
 import { Surface } from "../atoms/Surface/Surface";
-import { Link } from "react-router-dom";
-import Footer from "../molecules/Footer/Footer";
-export const HomePage = () => {
-  const [uri, setUri] = useState<string>("");
+import { useDispatch } from "react-redux";
+import { setIsLoading } from "../../state/track/trackSlice";
 
+export const HomePage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const tester = /^https:\/\/open.spotify.com.*\/(\w+)\/([a-zA-Z\d]+)/;
   const initialIds = [
-    "4PAR0Zp6Mbu3p6NKYClgBr",
+    "190IqlryWu91WBKeDgZqZz", //
+    "1ZBqJilDGBVYktvlCEo9jC", //
+    "3k3NWokhRRkEPhCzPmV8TW", //
+    "2X485T9Z5Ly0xyaghN73ed", //
+    "1JekRMGQ8iN4G1AAdh0SBa", //
+    "1NZs6n6hl8UuMaX0UC0YTz",
   ];
-  function handleUriChange(e: ChangeEvent<HTMLInputElement>) {
-    setUri(e.target.value);
-  }
 
   function handleButtonClick() {
-    if (tester.test(uri)) {
-      let [, type, id] = tester.exec(uri) as Array<string>;
-
-      navigate(
-        `/${type}/${initialIds[Math.floor(Math.random() * initialIds.length)]}`
-      );
-    }
+    dispatch(setIsLoading());
+    navigate(
+      `/track/${initialIds[Math.floor(Math.random() * initialIds.length)]}`
+    );
   }
 
   const Hero = () => {
@@ -41,16 +37,10 @@ export const HomePage = () => {
           favorite songs, customize colors, design and share with friends in
           seconds.
         </p>
-        <Link
-          to={`/track/${
-            initialIds[Math.floor(Math.random() * initialIds.length)]
-          }`}
-          className=""
-        >
-          <Button size="large">
-            <p className="font-semibold">Begin To Create</p>
-          </Button>
-        </Link>
+
+        <Button onClick={handleButtonClick} size="large">
+          <p className="font-semibold">Begin To Create</p>
+        </Button>
 
         <div className="relative flex justify-center my-12">
           <div className="w-40 sm:w-56 md:w-64 lg:w-80 xl:w-[372px] rounded-xl shadow-xl overflow-hidden -rotate-6 mr-2 z-10">

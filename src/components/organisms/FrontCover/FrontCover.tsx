@@ -8,7 +8,10 @@ import { SongPlayback } from "../../molecules/SongPlayback";
 import { PlayingControls } from "../../molecules/PlayingControls";
 import { LoadingSkeleton } from "../../molecules/LoadingSkeleton/LoadingSkeleton";
 import { useSelector } from "react-redux";
-import { SelectIsLoading } from "../../../state/track/selectors";
+import {
+  SelectIsCoverDataLoading,
+  SelectIsCoverPalleteLoading,
+} from "../../../state/track/selectors";
 
 interface IFrontCoverProps {
   textColor: Color;
@@ -34,11 +37,13 @@ export const FrontCover = forwardRef<HTMLDivElement, IFrontCoverProps>(
     }: IFrontCoverProps,
     ref
   ) => {
-    const isLoading = useSelector(SelectIsLoading);
+    const isCoverloading = useSelector(SelectIsCoverDataLoading);
+    const isPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
+
     return (
       <ElementSizeContextProvider>
         <div className="front-container downloadable" id="resizable-target">
-          <LoadingSkeleton isLoading={isLoading}>
+          <LoadingSkeleton isLoading={isCoverloading || isPaletteLoading}>
             <div
               ref={ref}
               style={{

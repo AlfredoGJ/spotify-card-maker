@@ -5,4 +5,5 @@ export type GenerateCardWidgetProps = {
   className?: string;
   resourceId?: string;
   resourceType?:ResourceType;
+  isLoading?: boolean;
 };

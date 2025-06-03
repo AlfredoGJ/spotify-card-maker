@@ -4,25 +4,31 @@ import sampleData from "../../data/sampleData.json";
 import { getImage, getScannable, getTrack } from "../../utils/api/getResource";
 import generatePaletteFromImage from "../../utils/generatePaletteFromImage";
 import generateDefaultPalette from "../../utils/generateDefaultPalette";
-const { id, name, duration_ms, artists, album, scannables,  } =
+const { id, name, duration_ms, artists, album, scannables } =
   sampleData.tracks.OnlyInMyDreams.track;
 
-const {coverPallete} = sampleData.tracks.OnlyInMyDreams
+const { coverPallete } = sampleData.tracks.OnlyInMyDreams;
 
 interface TrackState {
-  isloading:boolean;
+  isLoading: {
+    track: boolean;
+    coverData: boolean;
+    scannableData: boolean;
+    coverPallete: boolean;
+  };
   track?: Track;
   coverData?: string;
   scannableData?: string;
-  coverPallete: Array<Color>;
+  coverPallete?: Array<Color>;
 }
 
-const emptyState: TrackState = {
-  isloading:true,
-  coverPallete:[]
-}
 const initialState: TrackState = {
-  isloading:true,
+  isLoading: {
+    track: false,
+    coverData: false,
+    scannableData: false,
+    coverPallete: false,
+  },
   track: {
     id,
     name: name,
@@ -31,7 +37,7 @@ const initialState: TrackState = {
     album,
     scannables,
   },
-  coverData:'https://i.scdn.co/image/ab67616d0000b2730924b9c6232d2348d4efa0dc',
+  coverData: "https://i.scdn.co/image/ab67616d0000b2730924b9c6232d2348d4efa0dc",
   coverPallete: coverPallete,
   scannableData: `<svg width="640" height="160" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <rect x="0" y="0" width="400" height="100" fill="#000000"/>
@@ -82,25 +88,43 @@ const trackSlice = createSlice({
     setCoverPallete: (state, action) => {
       state.coverPallete = action.payload;
     },
+    setIsLoading: (state) => {
+      state.isLoading.coverData = true;
+      state.isLoading.scannableData = true;
+      state.isLoading.coverPallete = true;
+      state.isLoading.track = true;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(setTrackAsync.fulfilled, (state, action) => {
         state.track = action.payload;
+        state.isLoading.track = false;
+      })
+      .addCase(setTrackAsync.pending, (state) => {
+        state.isLoading.track = true;
       })
       .addCase(setCoverDataAsync.fulfilled, (state, action) => {
         state.coverData = action.payload;
+        state.isLoading.coverData = false;
+      })
+      .addCase(setCoverDataAsync.pending, (state) => {
+        state.isLoading.coverData = true;
       })
       .addCase(setScannableDataAsync.fulfilled, (state, action) => {
         state.scannableData = action.payload;
+        state.isLoading.scannableData = false;
+      })
+      .addCase(setScannableDataAsync.pending, (state) => {
+        state.isLoading.scannableData = true;
       })
       .addCase(setCoverPaletteAsync.fulfilled, (state, action) => {
         state.coverPallete = action.payload;
-        state.isloading= false
+        state.isLoading.coverPallete = false;
       })
-      .addCase(setTrackAsync.pending, (state) =>{
-        state.isloading= true
-      })
+      .addCase(setCoverPaletteAsync.pending, (state) => {
+        state.isLoading.coverPallete = true;
+      });
   },
 });
 
@@ -131,5 +155,10 @@ export const setCoverPaletteAsync = createAsyncThunk(
 );
 
 export default trackSlice.reducer;
-export const { setCoverData, setCoverPallete, setScannableData, setTrack } =
-  trackSlice.actions;
+export const {
+  setCoverData,
+  setCoverPallete,
+  setScannableData,
+  setTrack,
+  setIsLoading,
+} = trackSlice.actions;

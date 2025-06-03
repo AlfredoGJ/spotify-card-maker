@@ -14,6 +14,12 @@ import GenerateCardWidget from "../organisms/GenerateCardWidget";
 import TrackCardBackPreviewTemplate from "../templates/TrackCardBackPreviewTemplate/TrackCardBackPreviewTemplate";
 import TrackCardsFrontPreviewTemplate from "../templates/TrackFrontPreviewTemplate/TrackCardFrontPreviewTemplate";
 import { ResourceType } from "../../types/types";
+import {
+  SelectIsCoverDataLoading,
+  SelectIsCoverPalleteLoading,
+  SelectIsScannableDataLoading,
+  SelectIsTrackLoading,
+} from "../../state/track/selectors";
 
 const TrackGeneratorPage = () => {
   console.log("Rendered Component: AlbumGeneratorPAge");
@@ -23,13 +29,23 @@ const TrackGeneratorPage = () => {
   const resourceType = ResourceType.Track;
   const track = useSelector((state: RootState) => state.track.track);
   const coverData = useSelector((state: RootState) => state.track.coverData);
+  const isTrackLoading = useSelector(SelectIsTrackLoading);
+  const isCoverDataLoading = useSelector(SelectIsCoverDataLoading);
+  const isPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
+  const isScannableDataLoading = useSelector(SelectIsScannableDataLoading);
+
+  const isLoading =
+    isTrackLoading ||
+    isCoverDataLoading ||
+    isPaletteLoading ||
+    isScannableDataLoading;
 
   useEffect(() => {
-    if (track) {
-      dispatch(setCoverDataAsync(track.album.images[0].url));
-      dispatch(setScannableDataAsync(track.scannables[0].uri));
+    if (!isTrackLoading) {
+      dispatch(setCoverDataAsync(track!.album.images[0].url));
+      dispatch(setScannableDataAsync(track!.scannables[0].uri));
     }
-  }, [track, dispatch]);
+  }, [isTrackLoading, dispatch, track]);
 
   useEffect(() => {
     if (coverData) {
@@ -46,7 +62,11 @@ const TrackGeneratorPage = () => {
   return (
     <div className="max-w-6xl mx-auto px-6 py-6 grid gap-6 grid-cols-2">
       <div className="col-span-2 row-start-1 row-end-2 md:col-span-2">
-        <GenerateCardWidget resourceType={resourceType} resourceId={trackId} />
+        <GenerateCardWidget
+          resourceType={resourceType}
+          resourceId={trackId}
+          isLoading={isLoading}
+        />
       </div>
       <div className="col-span-2 md:col-span-1 col-start-1  flex w-full">
         <TrackCardsFrontPreviewTemplate />

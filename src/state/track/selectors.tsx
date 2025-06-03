@@ -8,4 +8,10 @@ export const SelectTrack = (state: RootState) => state.track.track;
 export const SelectGradientAngle = (state: RootState) =>
   state.editor.gradientAngle;
 
-export const SelectIsLoading = (state: RootState) => state.track.isloading;
+export const SelectIsTrackLoading = (state: RootState) => state.track.isLoading.track;
+export const SelectIsCoverDataLoading = (state: RootState) =>
+  state.track.isLoading.coverData;
+export const SelectIsScannableDataLoading = (state: RootState) =>
+  state.track.isLoading.scannableData;
+export const SelectIsCoverPalleteLoading = (state: RootState) =>
+  state.track.isLoading.coverPallete;

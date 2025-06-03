@@ -3,7 +3,11 @@ import type { GenerateCardWidgetProps } from "./types";
 import { Link2, X, Music } from "lucide-react";
 import { Input, Button } from "../../atoms";
 import { Spinner } from "../../atoms/Spinner/Spinner";
-import { SelectIsLoading } from "../../../state/track/selectors";
+import {
+  SelectIsCoverPalleteLoading,
+  SelectIsTrackLoading,
+  SelectIsCoverDataLoading
+} from "../../../state/track/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { Info } from "../../atoms";
 import { setTrackAsync } from "../../../state/track/trackSlice";
@@ -16,6 +20,7 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
   className,
   resourceType,
   resourceId,
+  isLoading = false
 }) => {
   const [inputText, setInputText] = useState(
     resourceId && resourceType
@@ -23,7 +28,7 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
       : ""
   );
   const navigate = useNavigate();
-  const isFetching = useSelector(SelectIsLoading);
+  
   const dispatch = useDispatch<AppDispatch>();
   function handleInputChange(value: string) {
     setInputText(value);
@@ -72,12 +77,12 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
           placeholder="Paste Spotify URI (e.g., https://open.spotify.com/track:4iV5W9uYEdYUVa79Axb7Rh) "
         />
         <Button
-          disabled={isFetching}
+          disabled={isLoading}
           onClick={handleGenerateClick}
           className="flex gap-2 items-center "
         >
-          <span>{isFetching ? "Generating" : "Generate"}</span>
-          {isFetching && <Spinner />}
+          <span>{isLoading ? "Generating" : "Generate"}</span>
+          {isLoading && <Spinner />}
         </Button>
       </div>
 

@@ -5,7 +5,7 @@ import colorScannable from "../../../utils/colorateScannable/colorScannable";
 import { Color } from "../../../types/types";
 import { LoadingSkeleton } from "../../molecules/LoadingSkeleton/LoadingSkeleton";
 import { useSelector } from "react-redux";
-import { SelectIsLoading } from "../../../state/track/selectors";
+import { SelectIsCoverDataLoading, SelectIsScannableDataLoading } from "../../../state/track/selectors";
 
 interface BackCoverProps {
   coverData: string;
@@ -30,10 +30,12 @@ export const BackCover = forwardRef<HTMLDivElement, BackCoverProps>(
       scannableText.values.hex
     );
 
-    const isLoading = useSelector(SelectIsLoading);
+    const isCoverLoading = useSelector(SelectIsCoverDataLoading);
+    const isScannableLoading = useSelector(SelectIsScannableDataLoading);
+
     return (
       <div className="back-container">
-        <LoadingSkeleton isLoading={isLoading}>
+        <LoadingSkeleton isLoading={isCoverLoading || isScannableLoading}>
           <div
             className="back-container downloadable"
             ref={ref}
