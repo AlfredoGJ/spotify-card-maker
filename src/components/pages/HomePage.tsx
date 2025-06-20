@@ -44,10 +44,10 @@ export const HomePage = () => {
 
         <div className="relative flex justify-center my-12">
           <div className="w-40 sm:w-56 md:w-64 lg:w-80 xl:w-[372px] rounded-xl shadow-xl overflow-hidden -rotate-6 mr-2 z-10">
-            <img fetchPriority="high"  src={SampleImg} alt="Sample" className="w-full" />
+            <img fetchPriority="high"  src={SampleImg} alt="Sample frontal card with attributes of the song" className="w-full" />
           </div>
           <div className="w-40 sm:w-56 md:w-64 lg:w-80 xl:w-[372px]  rounded-xl shadow-xl overflow-hidden rotate-6">
-            <img fetchPriority="high" src={SampleImgBack} alt="Sample" className="w-full" />
+            <img fetchPriority="high" src={SampleImgBack} alt="Sample back card with scannable code" className="w-full" />
           </div>
         </div>
       </section>
@@ -59,7 +59,7 @@ export const HomePage = () => {
       <Surface borderRadius="lg" shadow="md">
         <div className="flex flex-col items-center text-center">
           <div className="text-4xl text-emerald-500 mb-4">{icon}</div>
-          <h3 className="text-xl font-bold mb-4">{title}</h3>
+          <h2 className="text-xl font-bold mb-4">{title}</h2>
           <p className="text-gray-600">{description}</p>
         </div>
       </Surface>
