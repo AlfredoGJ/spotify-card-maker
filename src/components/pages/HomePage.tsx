@@ -44,10 +44,10 @@ export const HomePage = () => {
 
         <div className="relative flex justify-center my-12">
           <div className="w-40 sm:w-56 md:w-64 lg:w-80 xl:w-[372px] rounded-xl shadow-xl overflow-hidden -rotate-6 mr-2 z-10">
-            <img src={SampleImg} alt="Sample" className="w-full" />
+            <img fetchPriority="high"  src={SampleImg} alt="Sample" className="w-full" />
           </div>
           <div className="w-40 sm:w-56 md:w-64 lg:w-80 xl:w-[372px]  rounded-xl shadow-xl overflow-hidden rotate-6">
-            <img src={SampleImgBack} alt="Sample" className="w-full" />
+            <img fetchPriority="high" src={SampleImgBack} alt="Sample" className="w-full" />
           </div>
         </div>
       </section>

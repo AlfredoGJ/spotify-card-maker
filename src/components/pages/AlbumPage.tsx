@@ -11,7 +11,7 @@ import colorScannable from "../../utils/colorateScannable/colorScannable";
 import { getImage, getScannable, getAlbum } from "../../utils/api/getResource";
 import generatePaletteFromImage from "../../utils/generatePaletteFromImage";
 import { LoadingSkeleton } from "../molecules/LoadingSkeleton/LoadingSkeleton";
-import { EditorLayout } from "../atoms/EditorLayout/EditorLayout";
+import EditorLayout from "../atoms/EditorLayout/EditorLayout";
 import { ButtonGroup } from "../molecules/ButtonGroup/ButtonGroup";
 
 interface IColors {
@@ -119,25 +119,25 @@ export const AlbumPage = () => {
     setSvgData(colorScannable(svgData, undefined, color[0].values.hex));
   };
 
-  const handlePosterDownload =() =>{
-   let poster = document.getElementById('album-poster')
-  toPng(poster!, {canvasHeight:1800,canvasWidth:1200, quality:1}).then((dataurl) =>{
-    let link = document.createElement('a')
-    link.download = `${album?.name}-poster.png`
-    link.href = dataurl
-    link.click()
-  })
-  }
+  const handlePosterDownload = () => {
+    let poster = document.getElementById("album-poster");
+    toPng(poster!, { canvasHeight: 1800, canvasWidth: 1200, quality: 1 }).then(
+      (dataurl) => {
+        let link = document.createElement("a");
+        link.download = `${album?.name}-poster.png`;
+        link.href = dataurl;
+        link.click();
+      }
+    );
+  };
 
-  const handleFormatChange = (name:string)=>{
-    console.log("changed to")
-  }
-
-   
+  const handleFormatChange = (name: string) => {
+    console.log("changed to");
+  };
 
   return (
     <EditorLayout>
-     {/*  <div className="editor-area-top  bg-black"></div>
+      {/*  <div className="editor-area-top  bg-black"></div>
       <div className="flex flex-col w-[85%]  editor-area-main p-9 ">
         <LoadingSkeleton isLoading={loading}>
           <ElementSizeContextProvider>

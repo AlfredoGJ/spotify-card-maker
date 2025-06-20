@@ -6,7 +6,7 @@ const Header = () => {
     <header className="bg-emerald-500 text-white px-8 py-6 flex justify-between items-center">
       <Link to="/">
         <div className="flex gap-3 items-center">
-          <img src={logosvg} className="w-10" alt="logo"></img>
+          <img fetchPriority="high" src={logosvg} className="w-10" alt="logo"></img>
           <h1 className="text-3xl font-medium">
             {" "}
             Spot<span className="text-3xl font-thin">Image</span>

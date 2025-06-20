@@ -1,34 +1,44 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { HomePage } from "./components/pages/HomePage";
-import { SongPage } from "./components/pages/SongPage";
-import { AlbumPage } from "./components/pages/AlbumPage";
-import { EditorLayout } from "./components/atoms/EditorLayout/EditorLayout";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
-import TrackGeneratorPage from "./components/pages/TrackGeneratorPage";
 import { Layout } from "./components/templates/Layout/Layout";
 
+const TrackGeneratorPage = lazy(
+  () => import("./components/pages/TrackGeneratorPage")
+);
+const EditorLayout = lazy(
+  () => import("./components/atoms/EditorLayout/EditorLayout")
+);
 const router = createBrowserRouter([
   {
     path: "/",
 
-    element: <Layout/>,
+    element: <Layout />,
     children: [
       {
-        path:'/',
+        path: "/",
         element: <HomePage />,
       },
       {
         path: "/track/:trackId",
-        element: <TrackGeneratorPage />,
+        element: (
+          <Suspense>
+            <TrackGeneratorPage />,
+          </Suspense>
+        ),
       },
       {
         path: "editor/",
-        element: <EditorLayout />,
+        element: (
+          <Suspense>
+            <EditorLayout />,
+          </Suspense>
+        ),
       },
     ],
   },
