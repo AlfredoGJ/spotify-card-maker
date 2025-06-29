@@ -12,7 +12,7 @@ import {
 import { Outlet, useParams } from "react-router";
 import GenerateCardWidget from "../../organisms/GenerateCardWidget";
 import TrackCardsFrontPreviewTemplate from "../../templates/TrackFrontPreviewTemplate/TrackCardFrontPreviewTemplate";
-import { ResourceType } from "../../../types/types";
+import { ResourceType, Track } from "../../../types/types";
 import {
   SelectIsCoverDataLoading,
   SelectIsCoverPalleteLoading,
@@ -23,7 +23,6 @@ import { FrontCoverCustomizePanel } from "../../organisms/FrontCoverCustomizePan
 import { OutputWidget } from "../../organisms";
 import downloadImage from "../../../utils/DownloadImage";
 import "./now-playing.css";
-import { LoadingSkeleton } from "../../molecules/LoadingSkeleton/LoadingSkeleton";
 
 const TrackGeneratorPage = () => {
   console.log("Rendered Component: AlbumGeneratorPAge");
@@ -33,7 +32,6 @@ const TrackGeneratorPage = () => {
   console.log("Track ID from params:", trackId);
   const resourceType = ResourceType.Track;
   const track = useSelector((state: RootState) => state.track.track);
-  const coverData = useSelector((state: RootState) => state.track.coverData);
   const isTrackLoading = useSelector(SelectIsTrackLoading);
   const isCoverDataLoading = useSelector(SelectIsCoverDataLoading);
   const isPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
@@ -46,21 +44,17 @@ const TrackGeneratorPage = () => {
     isScannableDataLoading;
 
   useEffect(() => {
-    if (!isTrackLoading) {
-      dispatch(setCoverDataAsync(track!.album.images[0].url));
-      dispatch(setScannableDataAsync(track!.scannables[0].uri));
-    }
-  }, [isTrackLoading, dispatch, track]);
-
-  useEffect(() => {
-    if (coverData) {
-      dispatch(setCoverPaletteAsync(coverData));
-    }
-  }, [coverData, dispatch]);
-
-  useEffect(() => {
     if (trackId) {
-      dispatch(setTrackAsync(trackId));
+      dispatch(setTrackAsync(trackId)).then((response) => {
+        dispatch(
+          setScannableDataAsync((response.payload as Track).scannables[0].uri)
+        );
+        dispatch(
+          setCoverDataAsync((response.payload as Track).album.images[0].url)
+        ).then((response) => {
+          dispatch(setCoverPaletteAsync(response.payload as string));
+        });
+      });
     }
   }, [trackId, dispatch]);
 
@@ -84,10 +78,7 @@ const TrackGeneratorPage = () => {
       </div>
       <Outlet />
       <div className="col-span-2 md:col-span-1 col-start-1 flex w-full">
-        <LoadingSkeleton isLoading={isLoading}>
-
         <TrackCardsFrontPreviewTemplate ref={imageRef} />
-        </LoadingSkeleton>
       </div>
       <div className="col-span-2 md:col-span-1 col-start-1 h-max flex flex-col gap-6 w-full">
         <FrontCoverCustomizePanel />

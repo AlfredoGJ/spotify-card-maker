@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { Color, ResourceType } from "../../types/types";
+import { Album, Color, ResourceType } from "../../types/types";
 import { LoadingSkeleton } from "../molecules/LoadingSkeleton/LoadingSkeleton";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,7 +34,6 @@ export const AlbumPage = () => {
   const albumRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const album = useSelector(SelectAlbum);
-  const coverData = useSelector(SelectCoverData);
 
   const isAlbumLoading = useSelector(SelectIsAlbumLoading);
   const isCoverPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
@@ -60,30 +59,18 @@ export const AlbumPage = () => {
 
   useEffect(() => {
     if (albumId) {
-      dispatch(setAlbumAsync(albumId));
+      dispatch(setAlbumAsync(albumId)).then((response) => {
+        dispatch(
+          setScannableDataAsync((response.payload as Album).scannables[0].uri)
+        );
+        dispatch(
+          setCoverDataAsync((response.payload as Album).images[0].url)
+        ).then((response) => {
+          dispatch(setCoverPaletteAsync(response.payload as string));
+        });
+      });
     }
   }, [albumId, dispatch]);
-
-  // Then we fetch the cover data
-  useEffect(() => {
-    if (album) {
-      dispatch(setCoverDataAsync(album.images[0].url));
-    }
-  }, [album, dispatch]);
-
-  // Also we fetch the scannable data
-  useEffect(() => {
-    if (album) {
-      dispatch(setScannableDataAsync(album.scannables[0].uri));
-    }
-  }, [album, dispatch]);
-
-  // Then we generate the palette from the cover data
-  useEffect(() => {
-    if (coverData) {
-      dispatch(setCoverPaletteAsync(coverData));
-    }
-  }, [coverData, dispatch]);
 
   const handlePosterDownload = () => {
     let poster = albumRef.current! as HTMLDivElement;
@@ -102,16 +89,13 @@ export const AlbumPage = () => {
           isLoading={loading}
         />
       </div>
-      <div className="col-span-2 md:col-span-1 col-start-1 flex w-full h-full rounded-xl">
-        <LoadingSkeleton isLoading={loading!}>
-
+      <div className="col-span-2 md:col-span-1 col-start-1 flex w-full h-full">
         <AlbumPosterPreviewTemplate />
-        </LoadingSkeleton>
       </div>
       <div className="col-span-2 md:col-span-1 col-start-1 h-max flex flex-col gap-6 w-full">
-        <LoadingSkeleton isLoading={isCoverPaletteLoading!}>
-          <AlbumPosterCustomizePanel />
-        </LoadingSkeleton>
+        {/* <LoadingSkeleton isLoading={isCoverPaletteLoading!}> */}
+        <AlbumPosterCustomizePanel />
+        {/* </LoadingSkeleton> */}
         <OutputWidget onDownloadClick={handlePosterDownload} />
       </div>
     </div>

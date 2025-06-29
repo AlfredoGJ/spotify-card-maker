@@ -24,9 +24,7 @@ export const LoadingSkeleton = ({
     ></div>
   ) : (
     <div className="skeleton-content">
-      {React.Children.map(children, (child) =>
-        React.cloneElement(child as React.ReactElement)
-      )}
+      {children}
     </div>
   );
 };

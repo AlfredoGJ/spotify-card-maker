@@ -28,7 +28,7 @@ interface IFrontCoverProps {
   firstBgColor?: Color;
   secondBgColor?: Color;
   thirdBgColor?: Color;
-  backgroundPreset:string;
+  backgroundPreset: string;
   track: Track;
   coverData: string;
   playingTime: number;
@@ -55,36 +55,35 @@ export const FrontCover = forwardRef<HTMLDivElement, IFrontCoverProps>(
     const isTrackLoading = useSelector(SelectIsTrackLoading);
     const isLoading = isCoverloading || isPaletteLoading || isTrackLoading;
     return (
-      <Resizable>
-        <div className="front-container downloadable" id="resizable-target">
-          <LoadingSkeleton isLoading={isLoading} width={200} height={400}>
-            <div
-              ref={ref}
-              style={{
-                color: textColor ? `${textColor.values.hex}`: 'white',
-                background:backgroundPreset
-              }}
-            >
-              <div className="p-[5%]">
-                <AlbumCover src={coverData}></AlbumCover>
-                <TitleAndArtist
-                  title={{ text: track.name, size: 0.07 }}
-                  artist={{ text: track.artists[0].name, size: 0.04 }}
-                />
-                <FavIcon />
-                <SongPlayback duration_ms={track.duration_ms} currentTime={playingTime} />
-                <PlayingControls />
-                <ScannableCode
-                  className="mt-2 bg-gradient-to-tr"
-                  data={scannableData}
-                  relativeSize="big"
-                  foregroundColor={textColor}
-                />
-              </div>
-            </div>
-          </LoadingSkeleton>
+      <div className="front-container downloadable" id="resizable-target">
+        <div
+          ref={ref}
+          style={{
+            color: textColor ? `${textColor.values.hex}` : "white",
+            background: backgroundPreset,
+          }}
+        >
+          <div className="p-[5%]">
+            <AlbumCover src={coverData}></AlbumCover>
+            <TitleAndArtist
+              title={{ text: track.name, size: 0.07 }}
+              artist={{ text: track.artists[0].name, size: 0.04 }}
+            />
+            <FavIcon />
+            <SongPlayback
+              duration_ms={track.duration_ms}
+              currentTime={playingTime}
+            />
+            <PlayingControls />
+            <ScannableCode
+              className="mt-2 bg-gradient-to-tr"
+              data={scannableData}
+              relativeSize="big"
+              foregroundColor={textColor}
+            />
+          </div>
         </div>
-      </Resizable>
+      </div>
     );
   }
 );

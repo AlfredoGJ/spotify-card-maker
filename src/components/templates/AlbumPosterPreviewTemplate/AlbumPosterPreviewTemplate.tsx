@@ -14,6 +14,8 @@ import {
   SelectCoverData,
   SelectIsAlbumLoading,
   SelectIsCoverDataLoading,
+  SelectIsCoverPalleteLoading,
+  SelectIsScannableDataLoading,
   SelectScannableData,
 } from "../../../state/albumPoster/selectors";
 import { LoadingSkeleton } from "../../molecules/LoadingSkeleton/LoadingSkeleton";
@@ -33,22 +35,31 @@ export const AlbumPosterPreviewTemplate = forwardRef<HTMLDivElement>(
     const scannableData = useSelector(SelectScannableData);
     const isAlbumLoading = useSelector(SelectIsAlbumLoading);
     const isCoverDataLoading = useSelector(SelectIsCoverDataLoading);
-
-    const isLoading = isAlbumLoading || isCoverDataLoading;
+    const isCoverPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
+    const isScannableDataLoading = useSelector(SelectIsScannableDataLoading);
+    const isLoading =
+      isAlbumLoading ||
+      isCoverDataLoading ||
+      isCoverPaletteLoading ||
+      isScannableDataLoading;
     return (
-      <div ref={ref}>
-        <Resizable>
-          <AlbumPoster
-            backgroundColor={BackgroundColor[0]}
-            textColor={textColor[0]}
-            paletteData={visiblePalette}
-            album={album!}
-            coverData={coverData!}
-            scannableData={scannableData!}
-            frameColor={frameColor[0]}
-            scannableColor={scannableColor[0]}
-          />
-        </Resizable>
+      <div ref={ref} className="rounded-xl overflow-clip w-full">
+        <LoadingSkeleton isLoading={isLoading!}>
+          <Resizable>
+            <AlbumPoster
+              isLoading={isLoading!}
+              Fallback ={<LoadingSkeleton isLoading={isLoading!}/>}
+              backgroundColor={BackgroundColor[0]}
+              textColor={textColor[0]}
+              paletteData={visiblePalette}
+              album={album!}
+              coverData={coverData!}
+              scannableData={scannableData!}
+              frameColor={frameColor[0]}
+              scannableColor={scannableColor[0]}
+            />
+          </Resizable>
+        </LoadingSkeleton>
       </div>
     );
   }

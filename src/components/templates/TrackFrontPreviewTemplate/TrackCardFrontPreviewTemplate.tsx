@@ -7,9 +7,15 @@ import { forwardRef, useRef } from "react";
 import {
   SelectBackgroundPreset,
   SelectGradientAngle,
+  SelectIsCoverDataLoading,
+  SelectIsCoverPalleteLoading,
+  SelectIsScannableDataLoading,
+  SelectIsTrackLoading,
   SelectScannableData,
 } from "../../../state/track/selectors";
 import { selectBackgroundPreset } from "../../../utils/gradients/gradients";
+import Resizable from "../../../utils/ResizableHOC/Resizable";
+import { LoadingSkeleton } from "../../molecules/LoadingSkeleton/LoadingSkeleton";
 
 interface ITrackCardsPreview {}
 
@@ -37,17 +43,31 @@ const TrackCardsFrontPreviewTemplate = forwardRef<HTMLDivElement>(
 
     const nodeRef = useRef(null);
 
+    const isTrackLoading = useSelector(SelectIsTrackLoading);
+    const isPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
+    const isCoverDataLoading = useSelector(SelectIsCoverDataLoading);
+    const isScannableDataLoading = useSelector(SelectIsScannableDataLoading);
+    const isLoading =
+      isTrackLoading ||
+      isPaletteLoading ||
+      isCoverDataLoading ||
+      isScannableDataLoading;
+
     return (
       <div ref={ref} className="rounded-xl overflow-clip w-full">
-        <FrontCover
-          ref={nodeRef}
-          playingTime={playingTime}
-          coverData={coverData!}
-          track={track!}
-          backgroundPreset={background}
-          textColor={text}
-          scannableData={scannableData!}
-        />
+        <LoadingSkeleton isLoading={isLoading}>
+          <Resizable>
+            <FrontCover
+              ref={nodeRef}
+              playingTime={playingTime}
+              coverData={coverData!}
+              track={track!}
+              backgroundPreset={background}
+              textColor={text}
+              scannableData={scannableData!}
+            />
+          </Resizable>
+        </LoadingSkeleton>
       </div>
     );
   }

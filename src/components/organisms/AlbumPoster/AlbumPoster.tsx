@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, ReactElement, ReactNode } from "react";
 import { Color, Duration } from "../../../types/types";
 import { Album } from "../../../types/types";
 import { AlbumCover } from "../../atoms/AlbumCover";
@@ -28,6 +28,8 @@ interface IAlbumPosterProps {
   textColor: Color;
   frameColor?: Color;
   scannableColor?: Color;
+  isLoading: boolean;
+  Fallback: React.ReactNode;
 }
 
 export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
@@ -41,6 +43,8 @@ export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
       textColor,
       frameColor,
       scannableColor,
+      isLoading,
+      Fallback,
     }: IAlbumPosterProps,
     ref
   ) => {
@@ -51,27 +55,18 @@ export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
     // );
     const releaseDate = getUTCDateFromString("26/12/1990");
 
-    const isAlbumLoading = useSelector(SelectIsAlbumLoading);
-    const isCoverPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
-    const isScannableDataLoading = useSelector(SelectIsScannableDataLoading);
-    const isCoverDataLoading = useSelector(SelectIsCoverDataLoading);
-
-    const loading =
-      isAlbumLoading ||
-      isCoverPaletteLoading ||
-      isScannableDataLoading ||
-      isCoverDataLoading;
-
     return (
-      <LoadingSkeleton isLoading={loading!}>
-        <div id="resizable-target" className="album-poster downloadable">
-          <div
-            ref={ref}
-            className="p-[1.6%] aspect-[12/17] w-full h-full "
-            style={{
-              backgroundColor: frameColor?.values.hex || "transparent",
-            }}
-          >
+      <div id="resizable-target" className="album-poster downloadable">
+        <div
+          ref={ref}
+          className="p-[1.6%] aspect-[12/17] w-full h-full "
+          style={{
+            backgroundColor: frameColor?.values.hex || "transparent",
+          }}
+        >
+          {isLoading ? (
+            Fallback
+          ) : (
             <div
               style={{
                 backgroundColor: backgroundColor.values.hex,
@@ -82,7 +77,7 @@ export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
               <AlbumCover src={coverData} />
               <div className="grid grid-cols-[30%_30%_40%] grid-rows-[70%_30%]   pt-[5%] pb-[1%] max-h-full">
                 <div className="col-span-2 col-start-1 row-start-1 overflow-y-visible mr-[4%] ">
-                  <TrackList tracks={album.tracks} />
+                  <TrackList tracks={album!.tracks} />
                 </div>
 
                 <div className="col-start2 flex flex-col justify-stretch gap-6">
@@ -110,9 +105,9 @@ export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
-      </LoadingSkeleton>
+      </div>
     );
   }
 );
