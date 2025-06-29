@@ -1,111 +1,118 @@
-import React, { forwardRef, useEffect, useState } from "react";
-import { Color } from "../../../types/types";
+import React, { forwardRef } from "react";
+import { Color, Duration } from "../../../types/types";
 import { Album } from "../../../types/types";
 import { AlbumCover } from "../../atoms/AlbumCover";
-import { useResize } from "../../../utils/hooks/useResize";
 import { TrackList } from "../../molecules/TrackList";
 import { Palette } from "../../molecules/Pallete";
-import millisecondsToHMS from "../../../utils/millisecondToHMS";
 import getUTCDateFromString from "../../../utils/getUTCDateFromString";
+import { DurationAndRelease } from "../../molecules/DurationAndRelease/DurationAndRelease";
+import { TitleAndArtist } from "../../molecules/TitleAndArtist";
+import { ScannableCode } from "../../atoms/ScannableCode/ScannableCode";
+import { LoadingSkeleton } from "../../molecules/LoadingSkeleton/LoadingSkeleton";
+import "./album-poster.css";
+import { useSelector } from "react-redux";
+import {
+  SelectIsCoverDataLoading,
+  SelectIsCoverPalleteLoading,
+  SelectIsScannableDataLoading,
+  SelectIsAlbumLoading,
+} from "../../../state/albumPoster/selectors";
+import Resizable from "../../../utils/ResizableHOC/Resizable";
 
 interface IAlbumPosterProps {
-  albumData: Album;
+  album: Album;
   coverData: string;
   scannableData: string;
   paletteData: Array<Color>;
   backgroundColor: Color;
   textColor: Color;
+  frameColor?: Color;
+  scannableColor?: Color;
 }
 
 export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
   (
     {
-      albumData,
+      album,
       coverData,
       scannableData,
       paletteData,
       backgroundColor,
       textColor,
+      frameColor,
+      scannableColor,
     }: IAlbumPosterProps,
     ref
   ) => {
-    const duration = millisecondsToHMS(
-      albumData.tracks.reduce((acc, curr) => acc + curr.duration_ms, 0)
-    );
-    const releaseDate = getUTCDateFromString(albumData.release_date);
-    const elementSize = useResize();
+    const duration = Duration.fromMilliseconds(50000000);
 
-    useEffect(() => {});
+    // Duration.fromMilliseconds(
+    //   albumData.tracks.reduce((acc, curr) => acc + curr.duration_ms, 0)
+    // );
+    const releaseDate = getUTCDateFromString("26/12/1990");
+
+    const isAlbumLoading = useSelector(SelectIsAlbumLoading);
+    const isCoverPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
+    const isScannableDataLoading = useSelector(SelectIsScannableDataLoading);
+    const isCoverDataLoading = useSelector(SelectIsCoverDataLoading);
+
+    const loading =
+      isAlbumLoading ||
+      isCoverPaletteLoading ||
+      isScannableDataLoading ||
+      isCoverDataLoading;
 
     return (
-      <div
-        id="album-poster"
-        className="bg-black p-[1.6%] aspect-[12/17] w-full h-full "
-      >
-        <div
-          ref={ref}
-          style={{
-            backgroundColor: backgroundColor.values.hex,
-            color: textColor.values.hex,
-          }}
-          className={`w-full h-full grid grid-rows-[62%_28%_10%] px-[10%] py-[8%]`}
-        >
-          <AlbumCover src={coverData} />
-          <div className="grid grid-cols-4   pt-[5%] pb-[1%] max-h-full">
-            {
-              <div className="col-span-2">
-                <TrackList
-                  tracks={albumData.tracks}
-                  textSize={elementSize.height * 0.0132}
-                />
-              </div>
-            }
-            <div className="col-span-2 flex flex-col justify-stretch">
-              <div className="">
-                <Palette
-                  colors={paletteData}
-                  colorWidth={elementSize.height * 0.045}
-                />
-              </div>
-              <img
-                alt="scannable"
-                className="self-center w-[90%] pt-2 mr-[-4%]"
-                src={`data:image/svg+xml;utf8,${encodeURIComponent(
-                  scannableData
-                )}`}
-              ></img>
-            </div>
-          </div>
-          <div className="flex w-full">
+      <LoadingSkeleton isLoading={loading!}>
+        <div id="resizable-target" className="album-poster downloadable">
+          <div
+            ref={ref}
+            className="p-[1.6%] aspect-[12/17] w-full h-full "
+            style={{
+              backgroundColor: frameColor?.values.hex || "transparent",
+            }}
+          >
             <div
-              style={{ fontSize: `${elementSize.height * 0.019}px` }}
-              className="flex flex-col justify-end font-light w-5/12"
+              style={{
+                backgroundColor: backgroundColor.values.hex,
+                color: textColor.values.hex,
+              }}
+              className={`w-full h-full grid grid-rows-[63%_37%] px-[9%] py-[6%]`}
             >
-              <div>{`${duration.hours ? `${duration.hoursToString}:` : ""}${
-                duration.minutes ? duration.minutesToString : "00"
-              }:${duration.seconds ? duration.secondsToString : "00"} / ${
-                releaseDate.getDay() < 9
-                  ? `0${releaseDate.getDay()}`
-                  : releaseDate.getDay()
-              } ${releaseDate
-                .toLocaleString("en-us", { month: "long" })
-                .toUpperCase()} ${releaseDate.getFullYear()} `}</div>
-              <div>{`RELEASED BY: ${albumData.label.toUpperCase()}`}</div>
-            </div>
-            <div className="flex flex-col font-bold justify-end text-right w-7/12">
-              <div
-                className="font-semibold"
-                style={{ fontSize: `${elementSize.height * 0.028}px` }}
-              >
-                {albumData.artists[0].name.toUpperCase()}
-              </div>
-              <div style={{ fontSize: `${elementSize.height * 0.04}px` }}>
-                {albumData.name.toUpperCase()}
+              <AlbumCover src={coverData} />
+              <div className="grid grid-cols-[30%_30%_40%] grid-rows-[70%_30%]   pt-[5%] pb-[1%] max-h-full">
+                <div className="col-span-2 col-start-1 row-start-1 overflow-y-visible mr-[4%] ">
+                  <TrackList tracks={album.tracks} />
+                </div>
+
+                <div className="col-start2 flex flex-col justify-stretch gap-6">
+                  <div className="">
+                    <Palette colors={paletteData} colorWidth={0.045} />
+                  </div>
+                  <ScannableCode
+                    data={scannableData}
+                    foregroundColor={scannableColor}
+                  />
+                </div>
+                <div className="col-start-1 row-start-2 flex flex-col justify-end ">
+                  <DurationAndRelease
+                    duration={duration}
+                    releaseDate={releaseDate}
+                    label={album.label}
+                  />
+                </div>
+                <div className="col-start-2 col-span-2 flex w-full justify-end text-right items-end ">
+                  <TitleAndArtist
+                    variant="AlbumPoster"
+                    artist={{ text: album.artists[0].name, size: 0.028 }}
+                    title={{ text: album.name, size: 0.05 }}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </LoadingSkeleton>
     );
   }
 );

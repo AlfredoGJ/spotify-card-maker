@@ -44,6 +44,8 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
     if (tester.test(inputText)) {
       let [, type, id] = tester.exec(inputText) as Array<string>;
 
+      if(type === "album") 
+        type = 'album-poster'
       navigate(`/${type}/${id}`);
     }
   }

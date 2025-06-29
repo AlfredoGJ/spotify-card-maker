@@ -7,13 +7,12 @@ import { HomePage } from "./components/pages/HomePage";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
 import { Layout } from "./components/templates/Layout/Layout";
+import { AlbumPage } from "./components/pages/AlbumPage";
 
 const TrackGeneratorPage = lazy(
-  () => import("./components/pages/TrackGeneratorPage")
+  () => import("./components/pages/NowPlaying/TrackGeneratorPage")
 );
-const EditorLayout = lazy(
-  () => import("./components/atoms/EditorLayout/EditorLayout")
-);
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,12 +32,8 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "editor/",
-        element: (
-          <Suspense>
-            <EditorLayout />,
-          </Suspense>
-        ),
+        path: "album-poster/:albumId",
+        element: <AlbumPage />,
       },
     ],
   },

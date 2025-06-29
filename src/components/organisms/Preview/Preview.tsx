@@ -8,7 +8,14 @@ interface IPreviewProps extends HtmlHTMLAttributes<HTMLDivElement> {
 
 const Preview = ({ children, title }: IPreviewProps) => {
   return (
-    <Surface shadow="md">
+    <Surface
+      shadow="md"
+      padding="md"
+      borderRadius="xl"
+      backgroundColor="primary"
+      opacity={40}
+      blur="md"
+    >
       {/* The preview base container */}
       <div className="flex flex-col justify-between h-full">
         {/* The part of the preview that is equel for all the previews with the title and icon */}

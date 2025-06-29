@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Earth with Satellites</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 100;
+        }
+        
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="info">
+        <h3>🌍 Earth & Satellites</h3>
+        <p>Satellites: <span id="satCount">6</span></p>
+        <p>Earth Rotation: <span id="rotationSpeed">1x</span></p>
+    </div>
+    <div id="controls">
+        <!-- <p>⚡ Press SPACE to toggle animation</p> -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        let scene, camera, renderer, earth, satellites = [], stars;
+        let earthRotationSpeed = 0.005;
+        let satelliteSpeed = 0.01;
+        let animationPaused = false;
+        let mouseX = 0, mouseY = 0;
+        let cameraAngle = 0;
+
+        async function init() {
+            // Scene setup
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000);
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // Create starfield
+            createStarfield();
+
+            // Create Earth (now async)
+            await createEarth();
+
+            // Create satellites
+            createSatellites();
+
+            // Camera position
+            camera.position.set(0, 0, 8);
+
+            // Add lights - adjusted for night map
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 3, 5);
+            scene.add(directionalLight);
+
+            // Mouse controls
+            setupControls();
+
+            // Start animation
+            animate();
+        }
+
+        function createStarfield() {
+            const starsGeometry = new THREE.BufferGeometry();
+            const starsMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.5,
+                sizeAttenuation: false
+            });
+
+            const starsVertices = [];
+            for (let i = 0; i < 2000; i++) {
+                const x = (Math.random() - 0.5) * 200;
+                const y = (Math.random() - 0.5) * 200;
+                const z = (Math.random() - 0.5) * 200;
+                starsVertices.push(x, y, z);
+            }
+
+            starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+            stars = new THREE.Points(starsGeometry, starsMaterial);
+            scene.add(stars);
+        }
+
+        async function createEarth() {
+            const earthGeometry = new THREE.SphereGeometry(2, 128, 128);
+            
+            try {
+                // Load the uploaded Earth night map texture
+                const imageData = await window.fs.readFile('2k_earth_nightmap.jpg');
+                const blob = new Blob([imageData], { type: 'image/jpeg' });
+                const imageUrl = URL.createObjectURL(blob);
+                
+                const textureLoader = new THREE.TextureLoader();
+                const earthTexture = await new Promise((resolve, reject) => {
+                    textureLoader.load(imageUrl, resolve, undefined, reject);
+                });
+                
+                // Create canvas for meridians and parallels overlay
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 2048;
+                canvas.height = 1024;
+                
+                // Make canvas transparent
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw meridians (longitude lines)
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1;
+                ctx.globalAlpha = 0.2;
+                
+                for (let i = 0; i <= 24; i++) {
+                    const x = (i / 24) * canvas.width;
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+                
+                // Draw parallels (latitude lines)
+                for (let i = 0; i <= 12; i++) {
+                    const y = (i / 12) * canvas.height;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+                
+                // Draw equator line (thicker)
+                ctx.strokeStyle = '#ffff00';
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.4;
+                const equatorY = canvas.height / 2;
+                ctx.beginPath();
+                ctx.moveTo(0, equatorY);
+                ctx.lineTo(canvas.width, equatorY);
+                ctx.stroke();
+                
+                // Draw prime meridian (thicker)
+                const primeMeridianX = canvas.width / 2;
+                ctx.beginPath();
+                ctx.moveTo(primeMeridianX, 0);
+                ctx.lineTo(primeMeridianX, canvas.height);
+                ctx.stroke();
+                
+                const gridTexture = new THREE.CanvasTexture(canvas);
+                
+                // Create Earth material with both textures
+                const earthMaterial = new THREE.MeshPhongMaterial({
+                    map: earthTexture,
+                    shininess: 10,
+                    specular: 0x222222,
+                    emissive: 0x111111,
+                    emissiveMap: earthTexture
+                });
+                
+                earth = new THREE.Mesh(earthGeometry, earthMaterial);
+                
+                // Add grid overlay as a slightly larger sphere
+                const gridGeometry = new THREE.SphereGeometry(2.001, 128, 128);
+                const gridMaterial = new THREE.MeshBasicMaterial({
+                    map: gridTexture,
+                    transparent: true,
+                    opacity: 1
+                });
+                const gridMesh = new THREE.Mesh(gridGeometry, gridMaterial);
+                earth.add(gridMesh);
+                
+                scene.add(earth);
+                
+                // Clean up blob URL
+                URL.revokeObjectURL(imageUrl);
+                
+            } catch (error) {
+                console.error('Error loading Earth texture:', error);
+                // Fallback to a simple material if texture loading fails
+                const earthMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x1a1a2e,
+                    shininess: 10
+                });
+                earth = new THREE.Mesh(earthGeometry, earthMaterial);
+                scene.add(earth);
+            }
+        }
+
+        function createSatellites() {
+            const satelliteGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.2);
+            const satelliteMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+
+            for (let i = 0; i < 6; i++) {
+                const satellite = new THREE.Mesh(satelliteGeometry, satelliteMaterial);
+                
+                // Position satellites at different orbital distances
+                const distance = 3 + Math.random() * 2;
+                const angle = (i / 6) * Math.PI * 2;
+                
+                satellite.userData = {
+                    distance: distance,
+                    angle: angle,
+                    speed: satelliteSpeed * (0.5 + Math.random() * 0.5),
+                    inclination: (Math.random() - 0.5) * Math.PI * 0.5
+                };
+
+                satellites.push(satellite);
+                scene.add(satellite);
+            }
+        }
+
+        function setupControls() {
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    animationPaused = !animationPaused;
+                }
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (!animationPaused) {
+                // Rotate Earth
+                earth.rotation.y += earthRotationSpeed;
+
+                // Update satellites
+                satellites.forEach((satellite, index) => {
+                    satellite.userData.angle += satellite.userData.speed;
+                    
+                    const x = Math.cos(satellite.userData.angle) * satellite.userData.distance;
+                    const z = Math.sin(satellite.userData.angle) * satellite.userData.distance;
+                    const y = Math.sin(satellite.userData.angle + satellite.userData.inclination) * 0.5;
+                    
+                    satellite.position.set(x, y, z);
+                    
+                    // Make satellites always face Earth
+                    satellite.lookAt(earth.position);
+                });
+
+                // Gentle camera movement
+                cameraAngle += 0.002;
+                const radius = camera.position.length();
+                camera.position.x = Math.sin(cameraAngle) * radius * 0.3;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Initialize the scene
+        init();
+    </script>
+</body>
+</html>

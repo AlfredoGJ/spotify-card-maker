@@ -6,6 +6,7 @@ describe("Components: ButtonGroup", () => {
   const handleChangeCallback = jest.fn((name: string) => null);
   const buttonGroup = (
     <ButtonGroup
+      selectedName="one"
       defaultSelectedName="one"
       onSelectionChange={handleChangeCallback}
     >

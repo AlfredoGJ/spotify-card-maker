@@ -35,7 +35,7 @@ export const BackCover = forwardRef<HTMLDivElement, BackCoverProps>(
 
     return (
       <div className="back-container">
-        <LoadingSkeleton isLoading={isCoverLoading || isScannableLoading}>
+        <LoadingSkeleton isLoading={isCoverLoading || isScannableLoading} width={200} height={400}>
           <div
             className="back-container downloadable"
             ref={ref}

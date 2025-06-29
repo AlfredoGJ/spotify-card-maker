@@ -4,6 +4,36 @@ type AccessToken = {
   expires_in: number;
 };
 
+class Duration {
+  static fromMilliseconds(ms: number): Duration {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    return new Duration(hours, minutes % 60, seconds % 60);
+  }
+
+  getStringSeconds(): string {
+    return this.seconds.toString().padStart(2, "0");
+  }
+  getStringMinutes(): string {
+    return this.minutes.toString().padStart(2, "0");
+  }
+  getStringHours(): string {
+    return this.hours.toString().padStart(2, "0");
+  }
+  constructor(
+    public hours: number,
+    public minutes: number,
+    public seconds: number
+  ) {}
+
+  toString(): string {
+    return `${this.hours}:${this.minutes
+      .toString()
+      .padStart(2, "0")}:${this.seconds.toString().padStart(2, "0")}`;
+  }
+}
+
 type SimplifiedArtist = {
   id: string;
   name: string;
@@ -18,7 +48,7 @@ type Color = {
       g: number;
       b: number;
     };
-    hex:string
+    hex: string;
   };
 };
 type ElementSize = {
@@ -99,5 +129,6 @@ export type {
   Scannable,
   Color,
   ElementSize,
+  
 };
-export { ImageSizes, ResourceType };
+export { ImageSizes, ResourceType, Duration };

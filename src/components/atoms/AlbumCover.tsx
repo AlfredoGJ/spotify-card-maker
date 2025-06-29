@@ -1,17 +1,23 @@
-import React from "react";
+import React, { HtmlHTMLAttributes } from "react";
 
-interface IAlbumCoverProps {
+interface IAlbumCoverProps extends HtmlHTMLAttributes<HTMLImageElement> {
   src: string;
+  relativeSize?: "full" | "";
 }
 
-export const AlbumCover = ({ src }: IAlbumCoverProps) => {
+export const AlbumCover = ({
+  src,
+  relativeSize = "full",
+}: IAlbumCoverProps) => {
   return (
-    <img
-      style={{width:'100%'}}
-      crossOrigin="anonymous"
-      alt="cover"
-      className="cover"
-      src={src}
-    ></img>
+    <div className="flex justify-center">
+      <img
+        className={`cover`}
+        // style={{ width: "90%" }}
+        crossOrigin="anonymous"
+        alt="song-album-cover"
+        src={src}
+      />
+    </div>
   );
 };

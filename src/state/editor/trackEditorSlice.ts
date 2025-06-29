@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Color } from "../../types/types";
+import { GradientPreset, presetGradient1 } from "../../utils/gradients/gradients";
 
 interface TrackEditor {
+  backgroundPreset: GradientPreset;
   background: Array<Color>;
   text: Color;
   scannableBackground: Color;
   scannableText: Color;
-  gradientAngle: number
+  gradientAngle: number;
 }
 
 const defaultColor: Color = {
@@ -22,11 +24,12 @@ const whiteColor: Color = {
   },
 };
 const initialState: TrackEditor = {
+  backgroundPreset: GradientPreset.preset1,
   background: [defaultColor, whiteColor],
   text: defaultColor,
   scannableBackground: defaultColor,
   scannableText: whiteColor,
-  gradientAngle:130
+  gradientAngle: 33,
 };
 
 const trackEditorSlice = createSlice({
@@ -36,26 +39,30 @@ const trackEditorSlice = createSlice({
     changeBackground: (state, action: PayloadAction<Color[]>) => {
       state.background = action.payload;
     },
-    changeTextColor: (state, action:PayloadAction<Color[]>) => {
+    changeBackgroundPreset:(state,action:PayloadAction<GradientPreset>)=>{
+      state.backgroundPreset = action.payload
+    },
+    changeTextColor: (state, action: PayloadAction<Color[]>) => {
       state.text = action.payload[0];
     },
-    changeScannableBackground: (state, action:PayloadAction<Color[]>) => {
+    changeScannableBackground: (state, action: PayloadAction<Color[]>) => {
       state.scannableBackground = action.payload[0];
     },
-    changeScannableText: (state, action:PayloadAction<Color[]>) => {
+    changeScannableText: (state, action: PayloadAction<Color[]>) => {
       state.scannableText = action.payload[0];
     },
-    changeGradientAngle:(state,action)=>{
-      state.gradientAngle = action.payload
-    }
+    changeGradientAngle: (state, action) => {
+      state.gradientAngle = action.payload;
+    },
   },
 });
 
 export const {
   changeBackground,
+  changeBackgroundPreset,
   changeScannableBackground,
   changeScannableText,
   changeTextColor,
-  changeGradientAngle
+  changeGradientAngle,
 } = trackEditorSlice.actions;
 export default trackEditorSlice.reducer;

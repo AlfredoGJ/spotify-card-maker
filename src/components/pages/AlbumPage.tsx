@@ -1,18 +1,28 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { toPng } from "html-to-image";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { Color, Album } from "../../types/types";
-import { AlbumPoster } from "../organisms/AlbumPoster/AlbumPoster";
-import { ElementSizeContextProvider } from "../../utils/hooks/useResize";
-import { ColorSelector } from "../molecules/ColorSelector";
-import { SelectItem } from "../../utils/hooks/useSelect";
-import { Button } from "../atoms/Button/Button";
-import colorScannable from "../../utils/colorateScannable/colorScannable";
-import { getImage, getScannable, getAlbum } from "../../utils/api/getResource";
-import generatePaletteFromImage from "../../utils/generatePaletteFromImage";
+import { Color, ResourceType } from "../../types/types";
 import { LoadingSkeleton } from "../molecules/LoadingSkeleton/LoadingSkeleton";
-import EditorLayout from "../atoms/EditorLayout/EditorLayout";
-import { ButtonGroup } from "../molecules/ButtonGroup/ButtonGroup";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SelectAlbum,
+  SelectCoverData,
+  SelectIsAlbumLoading,
+  SelectIsCoverDataLoading,
+  SelectIsCoverPalleteLoading,
+  SelectIsScannableDataLoading,
+} from "../../state/albumPoster/selectors";
+import {
+  setAlbumAsync,
+  setCoverDataAsync,
+  setCoverPaletteAsync,
+  setScannableDataAsync,
+} from "../../state/albumPoster/albumPosterSlice";
+import { AppDispatch } from "../../state/store";
+import GenerateCardWidget from "../organisms/GenerateCardWidget";
+import { AlbumPosterCustomizePanel } from "../templates/AlbumPosterCustomizePanel/AlbumPosterCustomizePanel";
+import { OutputWidget } from "../organisms";
+import downloadImage from "../../utils/DownloadImage";
+import { AlbumPosterPreviewTemplate } from "../templates/AlbumPosterPreviewTemplate/AlbumPosterPreviewTemplate";
 
 interface IColors {
   text: Color;
@@ -21,183 +31,89 @@ interface IColors {
 
 export const AlbumPage = () => {
   const { albumId } = useParams();
-  const [album, setAlbum] = useState<Album>();
-  const [coverPalette, setCoverPalette] = useState<Array<Color>>([]);
-  const [svgData, setSvgData] = useState("");
-  const [cover, setCover] = useState("");
-  const [loading, setLoading] = useState(true);
+  const albumRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const album = useSelector(SelectAlbum);
+  const coverData = useSelector(SelectCoverData);
 
-  const [posterColors, setPosterColors] = useState<IColors>();
+  const isAlbumLoading = useSelector(SelectIsAlbumLoading);
+  const isCoverPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
+  const isScannableDataLoading = useSelector(SelectIsScannableDataLoading);
+  const isCoverDataLoading = useSelector(SelectIsCoverDataLoading);
 
-  const defaultBackgroundColorName = "neutral";
-  const defaultTextColorName = "black";
+  const loading =
+    isAlbumLoading ||
+    isCoverPaletteLoading ||
+    isScannableDataLoading ||
+    isCoverDataLoading;
+
+  const [posterColors, setPosterColors] = useState<IColors>({
+    text: {
+      name: "black",
+      values: { rgb: { r: 0, g: 0, b: 0 }, hex: "#000000" },
+    },
+    background: {
+      name: "neutral",
+      values: { rgb: { r: 229, g: 229, b: 229 }, hex: "#e5e5e5" },
+    },
+  });
 
   useEffect(() => {
-    let imgPalette: Array<Color> = [];
-    let svg = "";
-    let imageUrl = "";
-    let albumData: Album | null = null;
+    if (albumId) {
+      dispatch(setAlbumAsync(albumId));
+    }
+  }, [albumId, dispatch]);
 
-    getAlbum(albumId!)
-      .then((album) => {
-        albumData = album;
-        return getImage(album.images[0].url);
-      })
-      .then((image) => {
-        imageUrl = image;
-        return generatePaletteFromImage(image, 8);
-      })
-      .then((palette) => {
-        imgPalette = palette;
-        return albumData;
-      })
-      .then((album) => getScannable(album!.scannables[0].uri))
-      .then(
-        (scannableText: string) =>
-          (svg = colorScannable(
-            scannableText,
-            imgPalette[0].values.hex,
-            imgPalette[1].values.hex
-          ))
-      )
-      .finally(() => {
-        setCoverPalette(imgPalette);
-        setSvgData(svg);
-        setAlbum(albumData!);
-        setCover(imageUrl);
-        setLoading(false);
-        setPosterColors({
-          background: imgPalette.find(
-            (c) => c.name === defaultBackgroundColorName
-          )!,
-          text: imgPalette.find((c) => c.name === defaultTextColorName)!,
-        });
-      });
-  }, [albumId]);
+  // Then we fetch the cover data
+  useEffect(() => {
+    if (album) {
+      dispatch(setCoverDataAsync(album.images[0].url));
+    }
+  }, [album, dispatch]);
 
-  const handleBackgroundColorChange = useCallback(
-    (selected: SelectItem[]) => {
-      const color = selected.map((c) => ({
-        name: c.id.toString(),
-        values: c.value,
-      }));
+  // Also we fetch the scannable data
+  useEffect(() => {
+    if (album) {
+      dispatch(setScannableDataAsync(album.scannables[0].uri));
+    }
+  }, [album, dispatch]);
 
-      console.log("COLORBG", color);
-      console.log("Selected", selected);
-      if (color.length > 0)
-        setPosterColors({ ...posterColors!, background: color[0] });
-    },
-    [posterColors]
-  );
-
-  const handleTextColorChange = useCallback(
-    (selected: SelectItem[]) => {
-      const color = selected.map((c) => ({
-        name: c.id.toString(),
-        values: c.value,
-      }));
-      if (color.length > 0)
-        setPosterColors({ ...posterColors!, text: color[0] });
-    },
-    [posterColors]
-  );
-
-  const handleScannableBackgroundChange = (selected: SelectItem[]) => {
-    const color = selected.map((c) => ({
-      name: c.id.toString(),
-      values: c.value,
-    }));
-
-    setSvgData(colorScannable(svgData, color[0].values.hex));
-  };
-  const handleScannableTextChange = (selected: SelectItem[]) => {
-    const color = selected.map((c) => ({
-      name: c.id.toString(),
-      values: c.value,
-    }));
-
-    setSvgData(colorScannable(svgData, undefined, color[0].values.hex));
-  };
+  // Then we generate the palette from the cover data
+  useEffect(() => {
+    if (coverData) {
+      dispatch(setCoverPaletteAsync(coverData));
+    }
+  }, [coverData, dispatch]);
 
   const handlePosterDownload = () => {
-    let poster = document.getElementById("album-poster");
-    toPng(poster!, { canvasHeight: 1800, canvasWidth: 1200, quality: 1 }).then(
-      (dataurl) => {
-        let link = document.createElement("a");
-        link.download = `${album?.name}-poster.png`;
-        link.href = dataurl;
-        link.click();
-      }
+    let poster = albumRef.current! as HTMLDivElement;
+    downloadImage(
+      poster as HTMLDivElement,
+      `${album?.name}- ${album?.artists[0].name}-poster`
     );
   };
 
-  const handleFormatChange = (name: string) => {
-    console.log("changed to");
-  };
-
   return (
-    <EditorLayout>
-      {/*  <div className="editor-area-top  bg-black"></div>
-      <div className="flex flex-col w-[85%]  editor-area-main p-9 ">
-        <LoadingSkeleton isLoading={loading}>
-          <ElementSizeContextProvider>
-            <AlbumPoster
-              backgroundColor={posterColors?.background!}
-              textColor={posterColors?.text!}
-              paletteData={coverPalette.slice(0, 5)}
-              albumData={album!}
-              coverData={cover}
-              scannableData={svgData}
-            ></AlbumPoster>
-          </ElementSizeContextProvider>
-        </LoadingSkeleton>
-        <div className="flex p-2 justify-center">
-          <Button onClick={handlePosterDownload}>Download Poster</Button>
-          <ButtonGroup defaultSelectedName="one">
-            <Button name="one"> one</Button>
-            <Button name="two"> two</Button>
-            <Button name ="three"> three</Button>
-          </ButtonGroup>
-        </div>
+    <div className="max-w-6xl mx-auto px-6 py-6 grid gap-6 grid-cols-2">
+      <div className="col-span-2 row-start-1 row-end-2 md:col-span-2">
+        <GenerateCardWidget
+          resourceType={ResourceType.Album}
+          resourceId={albumId!}
+          isLoading={loading}
+        />
       </div>
-      <div className="flex flex-col editor-area-right">
-        <LoadingSkeleton isLoading={loading}>
-          <ColorSelector
-            defaultSelectedNames={["neutral"]}
-            colors={coverPalette}
-            maxSelect={1}
-            text="Background Color"
-            onChange={handleBackgroundColorChange}
-          ></ColorSelector>
+      <div className="col-span-2 md:col-span-1 col-start-1 flex w-full h-full rounded-xl">
+        <LoadingSkeleton isLoading={loading!}>
+
+        <AlbumPosterPreviewTemplate />
         </LoadingSkeleton>
-        <LoadingSkeleton isLoading={loading}>
-          <ColorSelector
-            defaultSelectedNames={["black"]}
-            colors={coverPalette}
-            maxSelect={1}
-            text="Text Color"
-            onChange={handleTextColorChange}
-          ></ColorSelector>
+      </div>
+      <div className="col-span-2 md:col-span-1 col-start-1 h-max flex flex-col gap-6 w-full">
+        <LoadingSkeleton isLoading={isCoverPaletteLoading!}>
+          <AlbumPosterCustomizePanel />
         </LoadingSkeleton>
-        <LoadingSkeleton isLoading={loading}>
-          <ColorSelector
-            defaultSelectedNames={["1"]}
-            colors={coverPalette}
-            maxSelect={1}
-            text="Code Background"
-            onChange={handleScannableBackgroundChange}
-          ></ColorSelector>
-        </LoadingSkeleton>
-        <LoadingSkeleton isLoading={loading}>
-          <ColorSelector
-            defaultSelectedNames={["0"]}
-            colors={coverPalette}
-            maxSelect={1}
-            text="Code Foreground"
-            onChange={handleScannableTextChange}
-          ></ColorSelector>
-        </LoadingSkeleton>
-      </div> */}
-    </EditorLayout>
+        <OutputWidget onDownloadClick={handlePosterDownload} />
+      </div>
+    </div>
   );
 };

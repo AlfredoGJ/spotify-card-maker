@@ -14,9 +14,9 @@ function millisecondsToHMS(millis: number) {
     hours,
     minutes,
     seconds,
-    hoursToString: normalizeNumber(hours),
-    minutesToString: normalizeNumber(minutes),
-    secondsToString: normalizeNumber(seconds),
+    hoursString: normalizeNumber(hours),
+    minutesString: normalizeNumber(minutes),
+    secondsString: normalizeNumber(seconds),
   };
 }
 

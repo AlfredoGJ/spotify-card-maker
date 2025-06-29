@@ -3,6 +3,7 @@ import { IButtonProps } from "../../atoms/Button/Button";
 interface ButtonGroupProps extends HtmlHTMLAttributes<HTMLDivElement> {
   defaultSelectedName: string;
   onSelectionChange?: (button: string) => void;
+  selectedName:string
 }
 
 export const ButtonGroup = ({
@@ -15,8 +16,11 @@ export const ButtonGroup = ({
   function handleButtonClick(name: string) {
     setSelectedName(name);
     onSelectionChange && onSelectionChange(name);
+    console.log('click')
   }
 
+ 
+  let numChildren = React.Children.count(children)
   let buttons = React.Children.map(children, (child, index) => {
     if (React.isValidElement<IButtonProps>(child)) {
       let childName = child.props.name!;
@@ -27,10 +31,12 @@ export const ButtonGroup = ({
         variant: childName === selectedName ? "primary" : "text",
         "aria-pressed": childName === selectedName ? true : false,
         name: childName,
+        className: `${(index>0 && index<numChildren) && 'border-l-0'}`,
         onClick: () => handleButtonClick(childName),
       });
     }
   });
+
 
   return <ul>{buttons?.map((b) => b)}</ul>;
 };

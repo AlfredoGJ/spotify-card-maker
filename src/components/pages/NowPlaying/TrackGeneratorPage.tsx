@@ -1,29 +1,34 @@
-import { AppDispatch, RootState } from "../../state/store";
+import { AppDispatch, RootState } from "../../../state/store";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   setCoverDataAsync,
   setScannableDataAsync,
   setCoverPaletteAsync,
   setTrackAsync,
-} from "../../state/track/trackSlice";
+} from "../../../state/track/trackSlice";
 
-import { useParams } from "react-router";
-import GenerateCardWidget from "../organisms/GenerateCardWidget";
-import TrackCardBackPreviewTemplate from "../templates/TrackCardBackPreviewTemplate/TrackCardBackPreviewTemplate";
-import TrackCardsFrontPreviewTemplate from "../templates/TrackFrontPreviewTemplate/TrackCardFrontPreviewTemplate";
-import { ResourceType } from "../../types/types";
+import { Outlet, useParams } from "react-router";
+import GenerateCardWidget from "../../organisms/GenerateCardWidget";
+import TrackCardsFrontPreviewTemplate from "../../templates/TrackFrontPreviewTemplate/TrackCardFrontPreviewTemplate";
+import { ResourceType } from "../../../types/types";
 import {
   SelectIsCoverDataLoading,
   SelectIsCoverPalleteLoading,
   SelectIsScannableDataLoading,
   SelectIsTrackLoading,
-} from "../../state/track/selectors";
+} from "../../../state/track/selectors";
+import { FrontCoverCustomizePanel } from "../../organisms/FrontCoverCustomizePanel/FrontCoverCustomizePanel";
+import { OutputWidget } from "../../organisms";
+import downloadImage from "../../../utils/DownloadImage";
+import "./now-playing.css";
+import { LoadingSkeleton } from "../../molecules/LoadingSkeleton/LoadingSkeleton";
 
 const TrackGeneratorPage = () => {
   console.log("Rendered Component: AlbumGeneratorPAge");
   const dispatch = useDispatch<AppDispatch>();
+  const imageRef = useRef(null);
   const { trackId } = useParams<{ trackId: string }>();
   console.log("Track ID from params:", trackId);
   const resourceType = ResourceType.Track;
@@ -59,6 +64,15 @@ const TrackGeneratorPage = () => {
     }
   }, [trackId, dispatch]);
 
+  const handleDownloadClick = () => {
+    const parentNode = imageRef.current! as HTMLDivElement;
+
+    downloadImage(
+      parentNode as HTMLElement,
+      `${track?.name}-${track?.artists[0].name}`
+    );
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-6 grid gap-6 grid-cols-2">
       <div className="col-span-2 row-start-1 row-end-2 md:col-span-2">
@@ -68,11 +82,16 @@ const TrackGeneratorPage = () => {
           isLoading={isLoading}
         />
       </div>
-      <div className="col-span-2 md:col-span-1 col-start-1  flex w-full">
-        <TrackCardsFrontPreviewTemplate />
+      <Outlet />
+      <div className="col-span-2 md:col-span-1 col-start-1 flex w-full">
+        <LoadingSkeleton isLoading={isLoading}>
+
+        <TrackCardsFrontPreviewTemplate ref={imageRef} />
+        </LoadingSkeleton>
       </div>
-      <div className="col-span-2 md:col-span-1 col-start-1  flex w-full">
-        <TrackCardBackPreviewTemplate />
+      <div className="col-span-2 md:col-span-1 col-start-1 h-max flex flex-col gap-6 w-full">
+        <FrontCoverCustomizePanel />
+        <OutputWidget onDownloadClick={handleDownloadClick} />
       </div>
     </div>
   );
