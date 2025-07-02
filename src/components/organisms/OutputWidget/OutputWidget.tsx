@@ -15,7 +15,7 @@ const OutputWidget = ({ onDownloadClick }: IOutputWidgetProps) => {
       blur="sm"
       borderRadius="xl"
     >
-      <div className="flex flex-col  gap-5 justify-between  lg:flex-row w-full ">
+      <div className="flex flex-col  gap-5 justify-between   w-full ">
         <div className="flex items-center justify-center">
           <span className="text-md font-medium text-slate-500 mr-2">
             Share:
