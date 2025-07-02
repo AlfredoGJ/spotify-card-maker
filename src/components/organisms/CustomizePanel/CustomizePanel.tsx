@@ -8,7 +8,7 @@ export const CustomizePanel = ({ children }: { children: React.ReactNode }) => {
   return (
     <Surface
       backgroundColor="tertiary"
-      opacity={70}
+      opacity={60}
       blur="sm"
       borderRadius="xl"
       padding="md"

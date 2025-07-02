@@ -68,7 +68,7 @@ const TrackGeneratorPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-6 grid gap-6 grid-cols-2">
+    <div className="max-w-6xl mx-auto px-6 py-10 grid gap-6 grid-cols-2">
       <div className="col-span-2 row-start-1 row-end-2 md:col-span-2">
         <GenerateCardWidget
           resourceType={resourceType}

@@ -8,7 +8,13 @@ interface IOutputWidgetProps {
 
 const OutputWidget = ({ onDownloadClick }: IOutputWidgetProps) => {
   return (
-    <Surface backgroundColor="tertiary" shadow="md">
+    <Surface
+      backgroundColor="tertiary"
+      shadow="lg"
+      opacity={60}
+      blur="sm"
+      borderRadius="xl"
+    >
       <div className="flex flex-col  gap-5 justify-between  lg:flex-row w-full ">
         <div className="flex items-center justify-center">
           <span className="text-md font-medium text-slate-500 mr-2">
@@ -30,13 +36,25 @@ const OutputWidget = ({ onDownloadClick }: IOutputWidgetProps) => {
           </div>
         </div>
 
-        <Button
-          onClick={onDownloadClick}
-          className="flex  items-center justify-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-4 rounded-lg font-medium transition-colors"
-        >
-          <Download size={20} />
-          Download
-        </Button>
+        <div className="flex gap-2 h-11 justify-start">
+          <Button
+            onClick={onDownloadClick}
+            className="flex  items-center justify-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-4 rounded-lg font-medium transition-colors"
+          >
+            <Download size={20} />
+            Download
+          </Button>
+
+          <div className="flex">
+            <a href="https://www.buymeacoffee.com/AlfredoGJ" target="_blank">
+              <img
+                src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+                alt="Buy Me A Coffee"
+                className="h-11 hover:brightness-105"
+              />
+            </a>
+          </div>
+        </div>
       </div>
     </Surface>
   );

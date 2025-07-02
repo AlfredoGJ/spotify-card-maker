@@ -12,9 +12,9 @@ import { SelectGradientAngle } from "../../../state/track/selectors";
 import {
   changeBackground,
   changeBackgroundPreset,
+  changeGradientAngle,
+  changeTextColor
 } from "../../../state/editor/trackEditorSlice";
-import { changeGradientAngle } from "../../../state/editor/trackEditorSlice";
-import { changeTextColor } from "../../../state/editor/trackEditorSlice";
 import { ButtonGroup } from "../../molecules/ButtonGroup/ButtonGroup";
 import { Button } from "../../atoms";
 

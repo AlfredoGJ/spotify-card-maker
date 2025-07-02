@@ -1,141 +1,347 @@
 {
-    "tracks": {
-        "OnlyInMyDreams": {
-            "track": {
-                "duration_ms": 170893,
-                "id": "190IqlryWu91WBKeDgZqZz",
-                "name": "Only in My Dreams",
-                "artists": [
-                    {
-                        "id": "2sSGPbdZJkaSE2AbcGOACx",
-                        "name": "The Marías",
-                        "type": "artist"
-                    }
-                ],
-                "album": {
-                    "id": "5XX1xVOP61GDQCGaZMLjhO",
-                    "name": "Superclean, Vol. I",
-                    "release_date": "2017-11-03",
-                    "total_tracks": 6,
-                    "images": [
-                        {
-                            "url": "https://i.scdn.co/image/ab67616d0000b2730924b9c6232d2348d4efa0dc",
-                            "width": 640,
-                            "height": 640
-                        },
-                        {
-                            "url": "https://i.scdn.co/image/ab67616d00001e020924b9c6232d2348d4efa0dc",
-                            "width": 300,
-                            "height": 300
-                        },
-                        {
-                            "url": "https://i.scdn.co/image/ab67616d000048510924b9c6232d2348d4efa0dc",
-                            "width": 64,
-                            "height": 64
-                        }
-                    ]
-                },
-                "scannables": [
-                    {
-                        "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/640/spotify:track:190IqlryWu91WBKeDgZqZz",
-                        "size": 640
-                    },
-                    {
-                        "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/300/spotify:track:190IqlryWu91WBKeDgZqZz",
-                        "size": 300
-                    }
-                ]
+  "tracks": {
+    "OnlyInMyDreams": {
+      "track": {
+        "duration_ms": 170893,
+        "id": "190IqlryWu91WBKeDgZqZz",
+        "name": "Only in My Dreams",
+        "artists": [
+          {
+            "id": "2sSGPbdZJkaSE2AbcGOACx",
+            "name": "The Marías",
+            "type": "artist"
+          }
+        ],
+        "album": {
+          "id": "5XX1xVOP61GDQCGaZMLjhO",
+          "name": "Superclean, Vol. I",
+          "release_date": "2017-11-03",
+          "total_tracks": 6,
+          "images": [
+            {
+              "url": "https://i.scdn.co/image/ab67616d0000b2730924b9c6232d2348d4efa0dc",
+              "width": 640,
+              "height": 640
             },
-            "coverPallete": [
-                {
-                    "name": "0",
-                    "values": {
-                        "rgb": {
-                            "r": 180,
-                            "g": 72,
-                            "b": 63
-                        },
-                        "hex": "#b4483f"
-                    }
-                },
-                {
-                    "name": "1",
-                    "values": {
-                        "rgb": {
-                            "r": 16,
-                            "g": 15,
-                            "b": 6
-                        },
-                        "hex": "#100f06"
-                    }
-                },
-                {
-                    "name": "2",
-                    "values": {
-                        "rgb": {
-                            "r": 236,
-                            "g": 225,
-                            "b": 208
-                        },
-                        "hex": "#ece1d0"
-                    }
-                },
-                {
-                    "name": "3",
-                    "values": {
-                        "rgb": {
-                            "r": 109,
-                            "g": 46,
-                            "b": 35
-                        },
-                        "hex": "#6d2e23"
-                    }
-                },
-                {
-                    "name": "4",
-                    "values": {
-                        "rgb": {
-                            "r": 135,
-                            "g": 141,
-                            "b": 131
-                        },
-                        "hex": "#878d83"
-                    }
-                },
-                {
-                    "name": "5",
-                    "values": {
-                        "rgb": {
-                            "r": 72,
-                            "g": 80,
-                            "b": 70
-                        },
-                        "hex": "#485046"
-                    }
-                },
-                {
-                    "name": "6",
-                    "values": {
-                        "rgb": {
-                            "r": 131,
-                            "g": 130,
-                            "b": 132
-                        },
-                        "hex": "#838284"
-                    }
-                },
-                {
-                    "name": "7",
-                    "values": {
-                        "rgb": {
-                            "r": 192,
-                            "g": 164,
-                            "b": 165
-                        },
-                        "hex": "#c0a4a5"
-                    }
-                }
-            ]
+            {
+              "url": "https://i.scdn.co/image/ab67616d00001e020924b9c6232d2348d4efa0dc",
+              "width": 300,
+              "height": 300
+            },
+            {
+              "url": "https://i.scdn.co/image/ab67616d000048510924b9c6232d2348d4efa0dc",
+              "width": 64,
+              "height": 64
+            }
+          ]
+        },
+        "scannables": [
+          {
+            "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/640/spotify:track:190IqlryWu91WBKeDgZqZz",
+            "size": 640
+          },
+          {
+            "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/300/spotify:track:190IqlryWu91WBKeDgZqZz",
+            "size": 300
+          }
+        ]
+      },
+      "coverPallete": [
+        {
+          "name": "0",
+          "values": {
+            "rgb": {
+              "r": 180,
+              "g": 72,
+              "b": 63
+            },
+            "hex": "#b4483f"
+          }
+        },
+        {
+          "name": "1",
+          "values": {
+            "rgb": {
+              "r": 16,
+              "g": 15,
+              "b": 6
+            },
+            "hex": "#100f06"
+          }
+        },
+        {
+          "name": "2",
+          "values": {
+            "rgb": {
+              "r": 236,
+              "g": 225,
+              "b": 208
+            },
+            "hex": "#ece1d0"
+          }
+        },
+        {
+          "name": "3",
+          "values": {
+            "rgb": {
+              "r": 109,
+              "g": 46,
+              "b": 35
+            },
+            "hex": "#6d2e23"
+          }
+        },
+        {
+          "name": "4",
+          "values": {
+            "rgb": {
+              "r": 135,
+              "g": 141,
+              "b": 131
+            },
+            "hex": "#878d83"
+          }
+        },
+        {
+          "name": "5",
+          "values": {
+            "rgb": {
+              "r": 72,
+              "g": 80,
+              "b": 70
+            },
+            "hex": "#485046"
+          }
+        },
+        {
+          "name": "6",
+          "values": {
+            "rgb": {
+              "r": 131,
+              "g": 130,
+              "b": 132
+            },
+            "hex": "#838284"
+          }
+        },
+        {
+          "name": "7",
+          "values": {
+            "rgb": {
+              "r": 192,
+              "g": 164,
+              "b": 165
+            },
+            "hex": "#c0a4a5"
+          }
         }
+      ],
+      "scannableSVG": "<svg width='640' height='160' viewBox='0 0 400 100' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>    <rect x='0' y='0' width='400' height='100' fill='#000000'/>    <rect x='100.00' y='44.50' width='6.71' height='11.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='112.42' y='30.50' width='6.71' height='39.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='124.84' y='37.50' width='6.71' height='25.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='137.27' y='27.00' width='6.71' height='46.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='149.69' y='34.00' width='6.71' height='32.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='162.11' y='34.00' width='6.71' height='32.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='174.53' y='37.50' width='6.71' height='25.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='186.96' y='44.50' width='6.71' height='11.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='199.38' y='23.50' width='6.71' height='53.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='211.80' y='44.50' width='6.71' height='11.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='224.22' y='23.50' width='6.71' height='53.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='236.64' y='20.00' width='6.71' height='60.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='249.07' y='20.00' width='6.71' height='60.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='261.49' y='23.50' width='6.71' height='53.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='273.91' y='41.00' width='6.71' height='18.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='286.33' y='41.00' width='6.71' height='18.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='298.76' y='44.50' width='6.71' height='11.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='311.18' y='37.50' width='6.71' height='25.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='323.60' y='30.50' width='6.71' height='39.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='336.02' y='23.50' width='6.71' height='53.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='348.44' y='44.50' width='6.71' height='11.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='360.87' y='30.50' width='6.71' height='39.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <rect x='373.29' y='44.50' width='6.71' height='11.00' rx='3.36' ry='3.36' fill='#ffffff'/>    <g transform='translate(20,20)'>        <path fill='#ffffff' d='M30,0A30,30,0,1,1,0,30,30,30,0,0,1,30,0M43.73,43.2a1.85,1.85,0,0,0-.47-2.43,5,5,0,0,0-.48-.31,30.64,30.64,0,0,0-5.92-2.72,37.07,37.07,0,0,0-11.56-1.84c-1.33.07-2.67.12-4,.23a52.44,52.44,0,0,0-7.08,1.12,3.45,3.45,0,0,0-.54.16,1.83,1.83,0,0,0-1.11,2.08A1.79,1.79,0,0,0,14.37,41a4.29,4.29,0,0,0,.88-.12,48.93,48.93,0,0,1,8.66-1.15,35.33,35.33,0,0,1,6.75.37,28.29,28.29,0,0,1,10.25,3.61,4.77,4.77,0,0,0,.5.27,1.85,1.85,0,0,0,2.33-.74M47.41,35a2.34,2.34,0,0,0-.78-3.19l-.35-.21a35.72,35.72,0,0,0-7.38-3.3,45.39,45.39,0,0,0-15.7-2.13,41.19,41.19,0,0,0-7.39.92c-1,.22-2,.48-2.94.77A2.26,2.26,0,0,0,11.29,30a2.32,2.32,0,0,0,1.44,2.2,2.47,2.47,0,0,0,1.67,0,37,37,0,0,1,10.38-1.46,43,43,0,0,1,7.91.74,35.46,35.46,0,0,1,9.58,3.18c.66.34,1.3.72,1.95,1.08A2.33,2.33,0,0,0,47.41,35m.35-8.49A2.79,2.79,0,0,0,52,24.11c0-.2,0-.4-.08-.6a2.78,2.78,0,0,0-1.4-1.85,35.91,35.91,0,0,0-6.41-2.91,56.19,56.19,0,0,0-16.86-2.89,58.46,58.46,0,0,0-7,.21,48.31,48.31,0,0,0-6.52,1c-.87.2-1.73.42-2.58.7a2.73,2.73,0,0,0-1.85,2.68,2.79,2.79,0,0,0,2,2.61,2.9,2.9,0,0,0,1.6,0c.87-.23,1.75-.47,2.63-.66a45.52,45.52,0,0,1,7.26-.91,57.42,57.42,0,0,1,6.4,0,53.7,53.7,0,0,1,6.11.72,42.63,42.63,0,0,1,8.49,2.35,33.25,33.25,0,0,1,4,2'/>    </g></svg>"
     }
+  },
+  "albums": {
+    "TriState": {
+      "album": {
+        "id": "7oGejxIa9yVGrUvwt74OPU",
+        "name": "Tri-State",
+        "genres": [],
+        "release_date": "2006-03-06",
+        "total_tracks": 13,
+        "images": [
+          {
+            "url": "https://i.scdn.co/image/ab67616d0000b27390b00aec2292a928d3b3de31",
+            "height": 640,
+            "width": 640
+          },
+          {
+            "url": "https://i.scdn.co/image/ab67616d00001e0290b00aec2292a928d3b3de31",
+            "height": 300,
+            "width": 300
+          },
+          {
+            "url": "https://i.scdn.co/image/ab67616d0000485190b00aec2292a928d3b3de31",
+            "height": 64,
+            "width": 64
+          }
+        ],
+        "artists": [
+          {
+            "id": "10gzBoINW3cLJfZUka8Zoe",
+            "name": "Above & Beyond",
+            "type": "artist"
+          }
+        ],
+        "tracks": [
+          {
+            "name": "Tri-State",
+            "track_number": 1,
+            "duration_ms": 251760
+          },
+          {
+            "name": "Stealing Time",
+            "track_number": 2,
+            "duration_ms": 431106
+          },
+          {
+            "name": "World On Fire",
+            "track_number": 3,
+            "duration_ms": 284240
+          },
+          {
+            "name": "Air For Life",
+            "track_number": 4,
+            "duration_ms": 447413
+          },
+          {
+            "name": "Can't Sleep",
+            "track_number": 5,
+            "duration_ms": 443866
+          },
+          {
+            "name": "Hope",
+            "track_number": 6,
+            "duration_ms": 268613
+          },
+          {
+            "name": "Liquid Love",
+            "track_number": 7,
+            "duration_ms": 402333
+          },
+          {
+            "name": "In The Past",
+            "track_number": 8,
+            "duration_ms": 148653
+          },
+          {
+            "name": "Alone Tonight",
+            "track_number": 9,
+            "duration_ms": 383186
+          },
+          {
+            "name": "Good For Me",
+            "track_number": 10,
+            "duration_ms": 342173
+          },
+          {
+            "name": "For All I Care",
+            "track_number": 11,
+            "duration_ms": 350226
+          },
+          {
+            "name": "Indonesia",
+            "track_number": 12,
+            "duration_ms": 301253
+          },
+          {
+            "name": "Home",
+            "track_number": 13,
+            "duration_ms": 432386
+          }
+        ],
+        "label": "Anjunabeats",
+        "scannables": [
+          {
+            "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/640/spotify:album:7oGejxIa9yVGrUvwt74OPU",
+            "size": 640
+          },
+          {
+            "uri": "https://scannables.scdn.co/uri/plain/svg/000000/white/300/spotify:album:7oGejxIa9yVGrUvwt74OPU",
+            "size": 300
+          }
+        ]
+      }
+    }
+  },
+  "palettes": {
+    "grayscale": [
+      {
+        "name": "0",
+        "values": {
+          "rgb": {
+            "r": 20,
+            "g": 20,
+            "b": 20
+          },
+          "hex": "#b4483f"
+        }
+      },
+      {
+        "name": "1",
+        "values": {
+          "rgb": {
+            "r": 50,
+            "g": 50,
+            "b": 50
+          },
+          "hex": "#100f06"
+        }
+      },
+      {
+        "name": "2",
+        "values": {
+          "rgb": {
+            "r": 80,
+            "g": 80,
+            "b": 80
+          },
+          "hex": "#ece1d0"
+        }
+      },
+      {
+        "name": "3",
+        "values": {
+          "rgb": {
+            "r": 120,
+            "g": 120,
+            "b": 120
+          },
+          "hex": "#6d2e23"
+        }
+      },
+      {
+        "name": "4",
+        "values": {
+          "rgb": {
+            "r": 150,
+            "g": 150,
+            "b": 150
+          },
+          "hex": "#878d83"
+        }
+      },
+      {
+        "name": "5",
+        "values": {
+          "rgb": {
+            "r": 180,
+            "g": 180,
+            "b": 180
+          },
+          "hex": "#485046"
+        }
+      },
+      {
+        "name": "6",
+        "values": {
+          "rgb": {
+            "r": 210,
+            "g": 210,
+            "b": 210
+          },
+          "hex": "#838284"
+        }
+      },
+      {
+        "name": "7",
+        "values": {
+          "rgb": {
+            "r": 240,
+            "g": 240,
+            "b": 240
+          },
+          "hex": "#c0a4a5"
+        }
+      }
+    ]
+  }
 }

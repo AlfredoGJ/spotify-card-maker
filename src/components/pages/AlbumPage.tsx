@@ -61,13 +61,13 @@ export const AlbumPage = () => {
     if (albumId) {
       dispatch(setAlbumAsync(albumId)).then((response) => {
         dispatch(
-          setScannableDataAsync((response.payload as Album).scannables[0].uri)
-        );
-        dispatch(
           setCoverDataAsync((response.payload as Album).images[0].url)
         ).then((response) => {
           dispatch(setCoverPaletteAsync(response.payload as string));
         });
+        dispatch(
+          setScannableDataAsync((response.payload as Album).scannables[0].uri)
+        );
       });
     }
   }, [albumId, dispatch]);
@@ -81,7 +81,7 @@ export const AlbumPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-6 grid gap-6 grid-cols-2">
+    <div className="max-w-6xl mx-auto px-6 py-10 grid gap-6 grid-cols-2">
       <div className="col-span-2 row-start-1 row-end-2 md:col-span-2">
         <GenerateCardWidget
           resourceType={ResourceType.Album}
@@ -90,7 +90,7 @@ export const AlbumPage = () => {
         />
       </div>
       <div className="col-span-2 md:col-span-1 col-start-1 flex w-full h-full">
-        <AlbumPosterPreviewTemplate />
+        <AlbumPosterPreviewTemplate ref={albumRef}/>
       </div>
       <div className="col-span-2 md:col-span-1 col-start-1 h-max flex flex-col gap-6 w-full">
         {/* <LoadingSkeleton isLoading={isCoverPaletteLoading!}> */}

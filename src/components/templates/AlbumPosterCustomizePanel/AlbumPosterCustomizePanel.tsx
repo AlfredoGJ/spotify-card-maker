@@ -92,7 +92,7 @@ export const AlbumPosterCustomizePanel = () => {
         action={changeVisiblePalette}
         controlProps={{ valueProp: "colors", onChangeProp: "onChange" }}
         text=""
-        defaultSelectedNames={["0", "1", "2", "3", "4"]}
+        defaultSelectedNames={["0", "2", "3", "4", "5"]}
         maxSelect={5}
       />
       <CustomizeControl

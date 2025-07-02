@@ -1,25 +1,32 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import { Button } from "../atoms/Button/Button";
 import { Surface } from "../atoms/Surface/Surface";
-import { useDispatch } from "react-redux";
-import { setIsLoading } from "../../state/track/trackSlice";
-import { initialTrackIds } from "../../data/initialIds";
+import { initialTrackIds, initialAlbumIds } from "../../data/initialIds";
 import NowPlayingSample from "../../assets/img/examples/nowplaying-sample.png";
 import NowPlayingSample2 from "../../assets/img/examples/nowplaying-sample-2.png";
+import NowPlayingSample3 from "../../assets/img/examples/nowplaying-sample-3.png";
+import NowPlayingSample4 from "../../assets/img/examples/nowplaying-sample-4.png";
 import AlbumPosterSample from "../../assets/img/examples/poster-sample.png";
 
 export const HomePage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  function handleButtonClick() {
-    dispatch(setIsLoading());
-    navigate(
-      `/track/${
-        initialTrackIds[Math.floor(Math.random() * initialTrackIds.length)]
-      }`
-    );
+  function handleButtonClick(tool: string) {
+    if (tool === "track") {
+      navigate(
+        `/${tool}/${
+          initialTrackIds[Math.floor(Math.random() * initialTrackIds.length)]
+        }`
+      );
+    }
+
+    if(tool === 'album-poster'){
+      navigate(
+        `/${tool}/${
+          initialAlbumIds[Math.floor(Math.random() * initialTrackIds.length)]
+        }`
+      );
+    }
   }
 
   const Hero = () => {
@@ -45,7 +52,7 @@ export const HomePage = () => {
           <div className="w-40 sm:w-56 md:w-64 lg:w-80 xl:w-[372px]  rounded-xl shadow-xl overflow-hidden rotate-6">
             <img
               fetchPriority="high"
-              src={NowPlayingSample2}
+              src={NowPlayingSample4}
               alt="Sample back card with scannable code"
               className="w-full"
             />
@@ -80,7 +87,7 @@ export const HomePage = () => {
   const ToolLinkCard = ({
     toolName,
     toolDescription,
-    toolLink,
+    toolUrl,
     toolImg,
   }: any) => {
     return (
@@ -91,9 +98,12 @@ export const HomePage = () => {
           backgroundPositionY: "75%",
         }}
         padding="none"
-        className="border border-emerald-500 relative"
+        className="border border-emerald-500 relative select-none cursor-pointer hover:scale-105 hover:transition-all"
       >
-        <div className=" text-secondary-200 flex gap-2 relative rounded-md px-4 py-4 backdrop-blur-sm bg-black/60 font-light h-full">
+        <div
+          onClick={() => handleButtonClick(toolUrl)}
+          className=" text-secondary-200 flex gap-2 relative rounded-md px-4 py-4 backdrop-blur-sm bg-black/60 font-light h-full"
+        >
           <div className="flex-col gap-2 w-4/5">
             <h3 className="text-lg font-semibold">{toolName}</h3>
             <p style={{ lineHeight: 1.3 }}>{toolDescription}</p>
@@ -139,16 +149,15 @@ export const HomePage = () => {
         <ToolLinkCard
           toolName="Now Playing Card"
           toolDescription="Create customizable Now Playing cards using your favorite song's album colors and Spotify scannable codes."
-          toolLink="/spotimage"
-          toolImg={NowPlayingSample}
+          toolUrl="track"
+          toolImg={NowPlayingSample3}
         />
         <ToolLinkCard
           toolName="Album Poster"
           toolDescription="Create stunning posters for the iconic albums you love, customize with album's colors an Spotify scannable code."
-          toolLink="/spotixer"
+          toolUrl="album-poster"
           toolImg={AlbumPosterSample}
         />
-      
       </section>
     );
   };

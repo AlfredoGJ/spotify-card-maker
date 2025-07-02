@@ -44,9 +44,10 @@ const classes = {
   backgroundColor:{
     primary:'bg-emerald-500',
     secondary:'bg-gray-800',
-    tertiary:'bg-slate-200',
+    tertiary:'bg-slate-300',
     white:'bg-white',
     base:'bg-amber-50'
+
   }
 };
 

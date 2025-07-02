@@ -1,13 +1,27 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Album, Color, Track } from "../../types/types";
+import { Album, Color } from "../../types/types";
 import sampleData from "../../data/sampleData.json";
-import { getImage, getScannable, getTrack, getAlbum } from "../../utils/api/getResource";
+import {
+  getImage,
+  getScannable,
+  getAlbum,
+} from "../../utils/api/getResource";
 import generatePaletteFromImage from "../../utils/generatePaletteFromImage";
-import generateDefaultPalette from "../../utils/generateDefaultPalette";
-const { id, name, duration_ms, artists, album, scannables } =
-  sampleData.tracks.OnlyInMyDreams.track;
+const triState = sampleData.albums.TriState;
 
-const { coverPallete } = sampleData.tracks.OnlyInMyDreams;
+const {
+  name,
+  id,
+  artists,
+  genres,
+  release_date,
+  total_tracks,
+  images,
+  scannables,
+  label,
+  tracks
+} = triState.album;
+const { grayscale } = sampleData.palettes
 
 interface TrackState {
   isLoading: {
@@ -23,14 +37,26 @@ interface TrackState {
 }
 
 const initialState: TrackState = {
- 
-  coverPallete:[],
   isLoading: {
     album: true,
     coverData: true,
     scannableData: true,
     coverPallete: true,
-    
+  },
+  coverPallete:grayscale,
+  scannableData: "",
+  coverData: "",
+  album: {
+    name,
+    id,
+    artists,
+    genres,
+    release_date,
+    total_tracks,
+    images,
+    scannables,
+    label,
+    tracks
   },
 };
 
@@ -38,10 +64,10 @@ const AlbumSlice = createSlice({
   name: "album",
   initialState,
   reducers: {
-    setAlbum: (state, action:PayloadAction<Album>) => {
+    setAlbum: (state, action: PayloadAction<Album>) => {
       state.album = action.payload;
     },
-    setCoverData: (state, action:PayloadAction<string>) => {
+    setCoverData: (state, action: PayloadAction<string>) => {
       state.coverData = action.payload;
     },
     setScannableData: (state, action) => {

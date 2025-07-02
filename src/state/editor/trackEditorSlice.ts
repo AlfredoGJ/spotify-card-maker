@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Color } from "../../types/types";
-import { GradientPreset, presetGradient1 } from "../../utils/gradients/gradients";
+import { GradientPreset } from "../../utils/gradients/gradients";
 
 interface TrackEditor {
   backgroundPreset: GradientPreset;

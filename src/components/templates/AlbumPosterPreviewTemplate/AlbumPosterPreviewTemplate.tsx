@@ -43,7 +43,7 @@ export const AlbumPosterPreviewTemplate = forwardRef<HTMLDivElement>(
       isCoverPaletteLoading ||
       isScannableDataLoading;
     return (
-      <div ref={ref} className="rounded-xl overflow-clip w-full">
+      <div ref={ref} className=" overflow-clip w-full">
         <LoadingSkeleton isLoading={isLoading!}>
           <Resizable>
             <AlbumPoster
