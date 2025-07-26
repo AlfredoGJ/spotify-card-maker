@@ -9,6 +9,7 @@ interface TrackEditor {
   scannableBackground: Color;
   scannableText: Color;
   gradientAngle: number;
+  showScannable:boolean;
 }
 
 const defaultColor: Color = {
@@ -25,11 +26,12 @@ const whiteColor: Color = {
 };
 const initialState: TrackEditor = {
   backgroundPreset: GradientPreset.preset1,
-  background: [defaultColor, whiteColor],
+  background: [defaultColor, whiteColor, defaultColor],
   text: defaultColor,
   scannableBackground: defaultColor,
   scannableText: whiteColor,
   gradientAngle: 33,
+  showScannable:true,
 };
 
 const trackEditorSlice = createSlice({
@@ -54,6 +56,9 @@ const trackEditorSlice = createSlice({
     changeGradientAngle: (state, action) => {
       state.gradientAngle = action.payload;
     },
+    changeShowScannable:(state, action)=>{
+      state.showScannable = action.payload;
+    }
   },
 });
 
@@ -64,5 +69,6 @@ export const {
   changeScannableText,
   changeTextColor,
   changeGradientAngle,
+  changeShowScannable
 } = trackEditorSlice.actions;
 export default trackEditorSlice.reducer;

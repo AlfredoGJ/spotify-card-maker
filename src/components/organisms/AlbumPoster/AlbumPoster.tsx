@@ -48,25 +48,26 @@ export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
     }: IAlbumPosterProps,
     ref
   ) => {
-    const duration = Duration.fromMilliseconds(50000000);
-
-    // Duration.fromMilliseconds(
-    //   albumData.tracks.reduce((acc, curr) => acc + curr.duration_ms, 0)
-    // );
-    const releaseDate = getUTCDateFromString("26/12/1990");
+    const duration = Duration.fromMilliseconds(
+      album.tracks.reduce((acc, curr) => acc + curr.duration_ms, 0)
+    );
+    const releaseDate = new Date(album.release_date)
 
     return (
-      <div id="resizable-target" className="album-poster downloadable">
-        <div
-          ref={ref}
-          className="p-[1.6%] aspect-[12/17] w-full h-full "
-          style={{
-            backgroundColor: frameColor?.values.hex || "transparent",
-          }}
-        >
-          {isLoading ? (
-            Fallback
-          ) : (
+      <div
+        ref={ref}
+        id="resizable-target"
+        className="album-poster downloadable"
+      >
+        {isLoading ? (
+          Fallback
+        ) : (
+          <div
+            className="p-[1.6%] aspect-[12/17] w-full h-full "
+            style={{
+              backgroundColor: frameColor?.values.hex || "transparent",
+            }}
+          >
             <div
               style={{
                 backgroundColor: backgroundColor.values.hex,
@@ -105,8 +106,8 @@ export const AlbumPoster = forwardRef<HTMLDivElement, IAlbumPosterProps>(
                 </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }

@@ -3,28 +3,24 @@ import "./loading-skeleton.css";
 
 interface ILoadingSkeletonProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
-  isLoading: boolean;
   width?: number;
   height?: number;
+  aspectRatio?: string;
 }
 
-export const LoadingSkeleton = ({
-  isLoading,
-  children,
+export const LoadingSkeleton: React.FC<ILoadingSkeletonProps> = ({
   width,
   height,
-}: ILoadingSkeletonProps) => {
-  const className = isLoading ? "visible" : "hidden";
-
-  return isLoading ? (
+  aspectRatio
+}) => {
+  return (
     <div
-      className={`skeleton ${className} ${
-        width ? `w-[${width}]px` : "w-full"
-      } ${height ? `w-[${width}]px` : "h-full"}`}
+      style={{
+        width: width ? width : "100%",
+        height: height ? height : "100%",
+        aspectRatio:aspectRatio ? aspectRatio : "1 / 1",
+      }}
+      className={`skeleton visible rounded-xl `}
     ></div>
-  ) : (
-    <div className="skeleton-content">
-      {children}
-    </div>
   );
 };

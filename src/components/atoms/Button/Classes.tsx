@@ -12,6 +12,7 @@ const ButtonClasses = {
   variant: {
     primary: "bg-emerald-500 text-white border border-green-400",
     text: "bg-slate-100 text-slate-400 border border-slate-400",
+    secondary:'bg-slate-100 text-emerald-500 border border-emerald-500'
   },
   shape: {
     default: "",

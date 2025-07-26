@@ -3,13 +3,9 @@ import { RootState } from "../store";
 export const SelectCoverPallete = (state: RootState) =>
   state.track.coverPallete;
 export const SelectTrack = (state: RootState) => state.track.track;
-export const SelectGradientAngle = (state: RootState) =>
-  state.editor.gradientAngle;
+
 export const SelectScannableData = (state: RootState) =>
   state.track.scannableData;
-
-export const SelectBackgroundPreset = (state: RootState) =>
-  state.editor.backgroundPreset;
 
 // Loading state selectors
 export const SelectIsTrackLoading = (state: RootState) =>

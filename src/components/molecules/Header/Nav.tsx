@@ -43,7 +43,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full h-20   z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full h-20 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-emerald-200/20 backdrop-blur-lg border-b border-white/20 text-emerald-500"
           : "bg-emerald-500 backdrop-blur-md text-white"
@@ -56,7 +56,7 @@ const Navbar = () => {
               <img
                 fetchPriority="high"
                 src={logosvg}
-                className="w-10"
+                className="w-10 h-11"
                 alt="logo"
               ></img>
               <h1 className="text-3xl font-medium">

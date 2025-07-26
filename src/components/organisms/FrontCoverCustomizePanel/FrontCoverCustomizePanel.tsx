@@ -4,19 +4,22 @@ import { CustomizePanel } from "../CustomizePanel/CustomizePanel";
 import { CustomizeControl } from "../CustomizeControl/CustomizeControl";
 import { ColorSelector } from "../../molecules/ColorSelector";
 import Slider from "../../molecules/Slider/Slider";
+import { SelectCoverPallete } from "../../../state/track/selectors";
 import {
+  SelectGradientAngle,
   SelectBackgroundPreset,
-  SelectCoverPallete,
-} from "../../../state/track/selectors";
-import { SelectGradientAngle } from "../../../state/track/selectors";
+  SelectShowScannable,
+} from "../../../state/editor/selectors";
 import {
   changeBackground,
   changeBackgroundPreset,
   changeGradientAngle,
-  changeTextColor
+  changeShowScannable,
+  changeTextColor,
 } from "../../../state/editor/trackEditorSlice";
 import { ButtonGroup } from "../../molecules/ButtonGroup/ButtonGroup";
 import { Button } from "../../atoms";
+import { Switch } from "../../atoms/Switch/Switch";
 
 export const FrontCoverCustomizePanel = () => {
   return (
@@ -25,15 +28,13 @@ export const FrontCoverCustomizePanel = () => {
         label="Background Presets"
         className="sm:col-span-2"
         Component={ButtonGroup}
-        children={
-          [
-            <Button name="preset-1"> 1</Button>,
-            <Button name="preset-2">2</Button>,
-            <Button name="preset-3"> 3</Button>,
-            <Button name="preset-5"> 4</Button>,
-            <Button name="preset-6"> 5</Button>,
-          ]
-        }
+        children={[
+          <Button name="preset-1"> 1</Button>,
+          <Button name="preset-2">2</Button>,
+          <Button name="preset-3"> 3</Button>,
+          <Button name="preset-5"> 4</Button>,
+          <Button name="preset-6"> 5</Button>,
+        ]}
         defaultSelectedName="preset-1"
         selector={SelectBackgroundPreset}
         action={changeBackgroundPreset}
@@ -75,6 +76,13 @@ export const FrontCoverCustomizePanel = () => {
         max={100}
         name="Percent"
         unit="%"
+      />
+      <CustomizeControl
+        label="Show Scannable"
+        Component={Switch}
+        selector={SelectShowScannable}
+        action={changeShowScannable}
+        controlProps={{ valueProp: "checked", onChangeProp: "onChange" }}
       />
     </CustomizePanel>
   );

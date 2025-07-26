@@ -7,8 +7,8 @@ export const PlayingControls = () => {
   const { width } = useElementSize();
   return (
     <div
-      className="flex justify-between items-center w-3/4 justify-self-center"
-      style={{ paddingInline: `${width * 0.10}px`, marginTop:`-${width* 0.026}px` }}
+      className="flex justify-between items-center"
+      style={{ paddingInline: `${width * 0.212}px`, marginTop:`-${width* 0.026}px` }}
     >
       <NextIcon
         transform="rotate(180)"

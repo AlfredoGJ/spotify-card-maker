@@ -28,7 +28,7 @@ export const ButtonGroup = ({
       return React.cloneElement(child, {
         size: "medium",
         shape: index ===0? 'roundedLeft': index === React.Children.count(children)-1? 'roundedRight': 'default',
-        variant: childName === selectedName ? "primary" : "text",
+        variant: childName === selectedName ? "primary" : "secondary",
         "aria-pressed": childName === selectedName ? true : false,
         name: childName,
         className: `${(index>0 && index<numChildren) && 'border-l-0'}`,

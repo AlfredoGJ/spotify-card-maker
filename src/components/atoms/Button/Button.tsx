@@ -11,7 +11,7 @@ export interface IButtonProps
   extends HtmlHTMLAttributes<HTMLButtonElement>,
     Pick<AllHTMLAttributes<HTMLButtonElement>, "name"> {
   size?: "small" | "medium" | "large" | "xsmall";
-  variant?: "primary" | "text";
+  variant?: "primary" | "text"| 'secondary';
   shape?: "default" | "rounded" | "roundedLeft" | "roundedRight" | "circle";
   className?:string
   disabled?:boolean

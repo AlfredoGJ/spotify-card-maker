@@ -43,24 +43,21 @@ export const AlbumPosterPreviewTemplate = forwardRef<HTMLDivElement>(
       isCoverPaletteLoading ||
       isScannableDataLoading;
     return (
-      <div ref={ref} className=" overflow-clip w-full">
-        <LoadingSkeleton isLoading={isLoading!}>
-          <Resizable>
-            <AlbumPoster
-              isLoading={isLoading!}
-              Fallback ={<LoadingSkeleton isLoading={isLoading!}/>}
-              backgroundColor={BackgroundColor[0]}
-              textColor={textColor[0]}
-              paletteData={visiblePalette}
-              album={album!}
-              coverData={coverData!}
-              scannableData={scannableData!}
-              frameColor={frameColor[0]}
-              scannableColor={scannableColor[0]}
-            />
-          </Resizable>
-        </LoadingSkeleton>
-      </div>
+      <Resizable>
+        <AlbumPoster
+          ref={ref}
+          isLoading={isLoading!}
+          Fallback={<LoadingSkeleton />}
+          backgroundColor={BackgroundColor[0]}
+          textColor={textColor[0]}
+          paletteData={visiblePalette}
+          album={album!}
+          coverData={coverData!}
+          scannableData={scannableData!}
+          frameColor={frameColor[0]}
+          scannableColor={scannableColor[0]}
+        />
+      </Resizable>
     );
   }
 );

@@ -3,10 +3,13 @@ import { ElementSize } from "../../types/types";
 
 interface ResizableHOCProps extends React.HtmlHTMLAttributes<HTMLElement> {}
 
-export const ElementSizeContext = createContext<ElementSize>({ width: 0, height: 0 });
+export const ElementSizeContext = createContext<ElementSize>({
+  width: 0,
+  height: 0,
+});
 
 const Resizable: FC<ResizableHOCProps> = ({ children }: ResizableHOCProps) => {
-  const elementRef = useRef(null);
+  const elementRef = useRef<HTMLDivElement| null>(null);
   const [elementSize, setElementSize] = useState<ElementSize>({
     width: 0,
     height: 0,
@@ -35,7 +38,15 @@ const Resizable: FC<ResizableHOCProps> = ({ children }: ResizableHOCProps) => {
       {React.Children.map(children, (child) =>
         React.cloneElement(child as React.ReactElement, {
           ...(child as React.ReactElement).props,
-          ref: elementRef,
+          ref: (node: HTMLDivElement | null) => {
+            elementRef.current = node;
+            const childRef = (child as any).ref;
+            if (typeof childRef === "function") {
+              childRef(node);
+            } else if (childRef && typeof childRef === "object") {
+              childRef.current = node;
+            }
+          },
         })
       )}
     </ElementSizeContext.Provider>

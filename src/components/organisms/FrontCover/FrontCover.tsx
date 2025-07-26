@@ -22,6 +22,13 @@ import {
   presetGradient3,
 } from "../../../utils/gradients/gradients";
 import Resizable from "../../../utils/ResizableHOC/Resizable";
+import { SelectShowScannable } from "../../../state/editor/selectors";
+import { useElementSize } from "../../../utils/hooks/useResize";
+
+interface IFallbackLoaderProps {
+  width?: number;
+  height?: number;
+}
 
 interface IFrontCoverProps {
   textColor: Color;
@@ -33,6 +40,7 @@ interface IFrontCoverProps {
   coverData: string;
   playingTime: number;
   scannableData: string;
+  fallback?: React.FC<IFallbackLoaderProps>;
 }
 
 export const FrontCover = forwardRef<HTMLDivElement, IFrontCoverProps>(
@@ -53,35 +61,45 @@ export const FrontCover = forwardRef<HTMLDivElement, IFrontCoverProps>(
     const isCoverloading = useSelector(SelectIsCoverDataLoading);
     const isPaletteLoading = useSelector(SelectIsCoverPalleteLoading);
     const isTrackLoading = useSelector(SelectIsTrackLoading);
-    const isLoading = isCoverloading || isPaletteLoading || isTrackLoading;
+    const showScannable = useSelector(SelectShowScannable);
+    var isLoading = isCoverloading || isPaletteLoading || isTrackLoading;
+    const {width, height} = useElementSize();
+    // isLoading=true;
     return (
-      <div className="front-container downloadable" id="resizable-target">
+      <div className="front-container" id="resizable-target">
         <div
           ref={ref}
           style={{
             color: textColor ? `${textColor.values.hex}` : "white",
             background: backgroundPreset,
+            borderRadius: "0.75rem",
           }}
         >
-          <div className="p-[5%]">
-            <AlbumCover src={coverData}></AlbumCover>
-            <TitleAndArtist
-              title={{ text: track.name, size: 0.07 }}
-              artist={{ text: track.artists[0].name, size: 0.04 }}
-            />
-            <FavIcon />
-            <SongPlayback
-              duration_ms={track.duration_ms}
-              currentTime={playingTime}
-            />
-            <PlayingControls />
-            <ScannableCode
-              className="mt-2 bg-gradient-to-tr"
-              data={scannableData}
-              relativeSize="big"
-              foregroundColor={textColor}
-            />
-          </div>
+          {isLoading ? (
+            <LoadingSkeleton aspectRatio="6/9" />
+          ) : (
+            <div className="p-[5%]">
+              <AlbumCover src={coverData}></AlbumCover>
+              <TitleAndArtist
+                title={{ text: track.name, size: 0.07 }}
+                artist={{ text: track.artists[0].name, size: 0.04 }}
+              />
+              <FavIcon />
+              <SongPlayback
+                duration_ms={track.duration_ms}
+                currentTime={playingTime}
+              />
+              <PlayingControls />
+              {showScannable && (
+                <ScannableCode
+                  className="mt-2 bg-gradient-to-tr"
+                  data={scannableData}
+                  relativeSize="big"
+                  foregroundColor={textColor}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
     );

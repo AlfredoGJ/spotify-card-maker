@@ -98,7 +98,7 @@ export const HomePage = () => {
           backgroundPositionY: "75%",
         }}
         padding="none"
-        className="border border-emerald-500 relative select-none cursor-pointer hover:scale-105 hover:transition-all"
+        className="border border-emerald-500 relative select-none cursor-pointer hover:scale-105 hover:transition-all transition-all"
       >
         <div
           onClick={() => handleButtonClick(toolUrl)}
