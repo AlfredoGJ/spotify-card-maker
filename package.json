@@ -2,13 +2,15 @@
   "name": "musickeyring",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "@headlessui/react": "^2.2.0",
+    "@headlessui/react": "^2.2.6",
     "@reduxjs/toolkit": "^2.6.1",
+    "@tailwindcss/vite": "^4.1.11",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.119",
+    "@types/node": "^20.0.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "colorthief": "^2.6.0",
@@ -20,16 +22,15 @@
     "react-redux": "^9.2.0",
     "react-router": "^6.28.1",
     "react-router-dom": "^6.28.1",
-    "react-scripts": "5.0.1",
     "redux": "^5.0.1",
+    "tailwindcss": "^4.1.11",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "vite build",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": [
@@ -50,9 +51,9 @@
     ]
   },
   "devDependencies": {
-    "@egdev6/component-creator": "^1.0.4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
-    "tailwindcss": "^3.4.17"
+    "@vitejs/plugin-react": "^4.7.0",
+    "vite": "^6.3.5"
   }
 }

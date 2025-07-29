@@ -1,7 +1,7 @@
 import { Album, Track } from "../../types/types";
 
 const getTrack = (id: string): Promise<Track> => {
-  return fetch(`${process.env.REACT_APP_API_BASE}?trackId=${id}`)
+  return fetch(`${process.env.VITE_API_BASE}?trackId=${id}`)
     .then((response) => response.json())
     .then((data) => {
       return data.track;
@@ -13,7 +13,7 @@ const getTrack = (id: string): Promise<Track> => {
 };
 
 const getAlbum = (id: string): Promise<Album> => {
-  return fetch(`${process.env.REACT_APP_API_BASE}?albumId=${id}`)
+  return fetch(`${process.env.VITE_API_BASE}?albumId=${id}`)
     .then((response) => response.json())
     .then((data) => {
       return data.album;
