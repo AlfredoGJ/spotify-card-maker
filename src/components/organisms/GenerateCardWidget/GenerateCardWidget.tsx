@@ -6,7 +6,7 @@ import { Spinner } from "../../atoms/Spinner/Spinner";
 import {
   SelectIsCoverPalleteLoading,
   SelectIsTrackLoading,
-  SelectIsCoverDataLoading
+  SelectIsCoverDataLoading,
 } from "../../../state/track/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { Info } from "../../atoms";
@@ -20,7 +20,12 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
   className,
   resourceType,
   resourceId,
-  isLoading = false
+  headerText,
+  placeholder,
+  buttonText,
+  infoText,
+  headerIcon,
+  isLoading = false,
 }) => {
   const [inputText, setInputText] = useState(
     resourceId && resourceType
@@ -28,7 +33,7 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
       : ""
   );
   const navigate = useNavigate();
-  
+
   const dispatch = useDispatch<AppDispatch>();
   function handleInputChange(value: string) {
     setInputText(value);
@@ -44,16 +49,15 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
     if (tester.test(inputText)) {
       let [, type, id] = tester.exec(inputText) as Array<string>;
 
-      if(type === "album") 
-        type = 'album-poster'
+      if (type === "album") type = "album-poster";
       navigate(`/${type}/${id}`);
     }
   }
   return (
     <Surface className={className} shadow="md">
       <div className="flex items-center gap-2 mb-4">
-        <Music size={24} />
-        <h2 className="text-xl font-semibold">Create your music card</h2>
+        {headerIcon}
+        <h2 className="text-xl font-semibold">{headerText}</h2>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 mb-4">
@@ -76,7 +80,7 @@ const GenerateCardWidget: FC<GenerateCardWidgetProps> = ({
           }
           value={inputText}
           onChange={handleInputChange}
-          placeholder="Paste Spotify URI (e.g., https://open.spotify.com/track:4iV5W9uYEdYUVa79Axb7Rh) "
+          placeholder= {placeholder}
         />
         <Button
           disabled={isLoading}

@@ -23,6 +23,8 @@ import { FrontCoverCustomizePanel } from "../../organisms/FrontCoverCustomizePan
 import { OutputWidget } from "../../organisms";
 import downloadImage from "../../../utils/DownloadImage";
 import "./now-playing.css";
+import { Container } from "../../atoms";
+import { Music } from "lucide-react";
 
 const TrackGeneratorPage = () => {
   console.log("Rendered Component: AlbumGeneratorPAge");
@@ -68,12 +70,17 @@ const TrackGeneratorPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 grid gap-6 grid-cols-2">
+    <Container variant="page" className="grid gap-6 grid-cols-2">
       <div className="col-span-2 row-start-1 row-end-2 md:col-span-2">
         <GenerateCardWidget
           resourceType={resourceType}
           resourceId={trackId}
           isLoading={isLoading}
+          headerText="Create your music card"
+          headerIcon={<Music size={24} />}
+          placeholder="Paste Spotify URI (e.g., https://open.spotify.com/track:4iV5W9uYEdYUVa79Axb7Rh) "
+          buttonText="Generate"
+          infoText="To find a Spotify URI: right-click on a song, album, or playlist → Share → Copy Spotify URI"
         />
       </div>
       <Outlet />
@@ -84,7 +91,7 @@ const TrackGeneratorPage = () => {
         <FrontCoverCustomizePanel />
         <OutputWidget onDownloadClick={handleDownloadClick} />
       </div>
-    </div>
+    </Container>
   );
 };
 

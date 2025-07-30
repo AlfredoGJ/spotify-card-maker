@@ -23,6 +23,7 @@ import { AlbumPosterCustomizePanel } from "../templates/AlbumPosterCustomizePane
 import { OutputWidget } from "../organisms";
 import downloadImage from "../../utils/DownloadImage";
 import { AlbumPosterPreviewTemplate } from "../templates/AlbumPosterPreviewTemplate/AlbumPosterPreviewTemplate";
+import { Container } from "../atoms";
 
 interface IColors {
   text: Color;
@@ -80,8 +81,9 @@ export const AlbumPage = () => {
     );
   };
 
+  
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 grid gap-6 grid-cols-2">
+    <Container className="grid gap-6 grid-cols-2">
       <div className="col-span-2 row-start-1 row-end-2 md:col-span-2">
         <GenerateCardWidget
           resourceType={ResourceType.Album}
@@ -98,6 +100,6 @@ export const AlbumPage = () => {
         {/* </LoadingSkeleton> */}
         <OutputWidget onDownloadClick={handlePosterDownload} />
       </div>
-    </div>
+    </Container>
   );
 };

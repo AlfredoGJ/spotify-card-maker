@@ -5,5 +5,10 @@ export type GenerateCardWidgetProps = {
   className?: string;
   resourceId?: string;
   resourceType?:ResourceType;
+  headerText?: string;
+  headerIcon?: React.ReactNode;
+  placeholder?: string;
+  buttonText?: string;
+  infoText?: string;
   isLoading?: boolean;
 };

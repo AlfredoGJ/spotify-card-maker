@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "./state/store";
 import { Layout } from "./components/templates/Layout/Layout";
 import { AlbumPage } from "./components/pages/AlbumPage";
+import PlaylistCreatorPage from "./components/pages/PlaylistCreator/PlaylistCreatorPage";
 
 const TrackGeneratorPage = lazy(
   () => import("./components/pages/NowPlaying/TrackGeneratorPage")
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
         path: "album-poster/:albumId",
         element: <AlbumPage />,
       },
+      {
+        path: "playlist-creator",
+        element: <PlaylistCreatorPage />,
+      }
     ],
   },
 ]);
